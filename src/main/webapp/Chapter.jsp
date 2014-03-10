@@ -68,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
             for(int i = 1; i <= chapterCount; i++){%>
               <div class="chapter">
-                <a href="">
+                <a href="./section?bookId=${book.getSeqId()&chapterId=${i}">
                   <%=i%>
                 </a>
               </div>
