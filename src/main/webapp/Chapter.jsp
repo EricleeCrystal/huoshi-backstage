@@ -1,16 +1,15 @@
-<!--
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.huoshi.im.vo.*"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>-->
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
     	<base href="<%=basePath%>">
-    	<title>圣经目录</title>
-    <meta charset="UTF-8">
+    	<title>章目录</title>
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
 		<meta http-equiv="expires" content="0">    
@@ -22,30 +21,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
         margin: 0;
       }
-
-      .books{
+      .body{
         width: 100%;
         min-width: 1000px;
         position: relative;
         height: 100%;
-        margin-top: 100px;
+        margin-left: 100px;
         text-align: center;
       }
-
       .book{
         position: relative;
         float: left;
+        margin-top: 50px;
+        width: 100%;
+        text-align: center;
+      }
+      .chapters{
+        position: relative;
+        float: left;
         width: 50%;
-        left: 100px;
-        margin-bottom: 50px;
+        left: 25%;
+        margin-top: 10px;
+        
+      }
+
+      .chapter{
+        position: relative;
+        float: left;
+        padding: 5px 10px;
+        margin-left: 5px;
+        margin-bottom: 5px;
       }
     </style>
   	</head>
   	<body>
-      <div class="books">
-        <div class="book"><a href="">创世纪</a></div>
-        <div class="book"><a href="">创世纪</a></div>
-        <div class="book"><a href="">创世纪</a></div>
+      <div class="body">
+        <div class="book">
+          <s:property value="book.getBookName()"/>
+        </div>
+        <div class="chapters">
+          <%
+            Book book=(Book)request.getAttribute("book");
+            int chapterCount = 0;
+            if(book != null){
+              chapterCount = book.getChapterCount();
+            }
+            for(int i = 1; i <= chapterCount; i++){%>
+              <div class="chapter">
+                <a href="">
+                  <%=i%>
+                </a>
+              </div>
+            <%}
+          %>
+        </div>
       </div>
+
   	</body>
 </html>

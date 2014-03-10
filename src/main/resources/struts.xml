@@ -26,10 +26,18 @@
 		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
 			<result name="success">/wimgr.jsp</result>
 		</action>
+		<action name="book" class="com.huoshi.im.action.BookAction">
+			<result name="success">/book.jsp</result>
+		</action>
+		<action name="chapter" class="com.huoshi.im.action.ChapterAction">
+			<result name="success">/chapter.jsp</result>
+		</action>
+		<action name="section" class="com.huoshi.im.action.SectionAction">
+			<result name="success">/section.jsp</result>
+		</action>
 	</package>
 
 	<package name="json" extends="struts-default">
-
 		<action name="addWelcomeImageAction" class="com.huoshi.im.action.AddWelcomeImageAction"
 			method="process">
 			<result type="stream">

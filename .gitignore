@@ -8,5 +8,6 @@
 /logs/
 /target/
 /src/main/webapp/file/
+/src/test/
 .classpath
 .project

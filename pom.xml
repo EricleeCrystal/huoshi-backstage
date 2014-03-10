@@ -16,6 +16,7 @@
 		<logback.version>1.0.13</logback.version>
 		<jackson.version>2.3.1</jackson.version>
 		<struts2.version>2.3.8</struts2.version>
+		<httpcomponents.version>4.3.3</httpcomponents.version>
 	</properties>
 
 	<dependencies>
@@ -25,13 +26,12 @@
 			<version>1.12.2</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 
+		<!---->
 		<dependency>
 			<groupId>com.huoshi.im</groupId>
 			<artifactId>huoshi-core</artifactId>
 			<version>1.0</version>
 		</dependency>
-		 -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -48,6 +48,12 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
@@ -173,6 +179,23 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- 测试使用 -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-cache</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpcomponents.version}</version>
 		</dependency>
 
 	</dependencies>

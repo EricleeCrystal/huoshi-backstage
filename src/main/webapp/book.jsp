@@ -1,15 +1,16 @@
-<!--
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.huoshi.im.vo.*"%>
+<%@ page import="java.util.List.*"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>-->
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
     	<base href="<%=basePath%>">
-    	<title>章目录</title>
+    	<title>圣经目录</title>
     <meta charset="UTF-8">
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
@@ -22,46 +23,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
         margin: 0;
       }
-      .body{
+
+      .title{
+        width: 100%;        
+        text-align: center;
+        margin-top: 20px;
+      }
+      .books{
         width: 100%;
         min-width: 1000px;
         position: relative;
         height: 100%;
-        margin-left: 100px;
+        margin-top: 100px;
         text-align: center;
       }
+
       .book{
         position: relative;
         float: left;
-        margin-top: 50px;
-        width: 100%;
-        text-align: center;
-      }
-      .chapters{
-        position: relative;
-        float: left;
-        width: 50%;
-        left: 25%;
-        margin-top: 10px;
-        
-      }
-
-      .chapter{
-        position: relative;
-        float: left;
-        padding: 5px 10px;
-        margin-left: 5px;
-        margin-bottom: 5px;
+        width: 20%;
+        left: 10px;
+        margin-bottom: 20px;
       }
     </style>
   	</head>
   	<body>
-      <div class="body">
-        <div class="book">创世纪</div>
-        <div class="chapters">
-          <div class="chapter"><a href="">1</a></div>
-        </div>
+      <div class="title">圣经</div>
+      <div class="books">
+        <s:iterator id="book" value="bookList">
+          <div class="book">
+            <a href="./book?bookId=${book.getSeqId()}">
+              <s:property value="#book.getBookName()"/>
+            </a>
+          </div>
+        </s:iterator>
       </div>
-
   	</body>
 </html>
