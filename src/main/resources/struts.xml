@@ -33,6 +33,7 @@
 			<result name="success">/chapter.jsp</result>
 		</action>
 		<action name="section" class="com.huoshi.im.action.SectionAction">
+			<result name="error">/index.jsp</result>
 			<result name="success">/section.jsp</result>
 		</action>
 	</package>
