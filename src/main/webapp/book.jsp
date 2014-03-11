@@ -23,7 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
         margin: 0;
       }
-
       .title{
         width: 100%;        
         text-align: center;
@@ -52,7 +51,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class="books">
         <s:iterator id="book" value="bookList">
           <div class="book">
-            <a href="./book?bookId=${book.getSeqId()}">
+            <a href="./chapter?bookId=${book.getSeqId()}">
               <s:property value="#book.getBookName()"/>
             </a>
           </div>
