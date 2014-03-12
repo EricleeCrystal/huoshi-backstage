@@ -36,6 +36,10 @@
 			<result name="error">/index.jsp</result>
 			<result name="success">/section.jsp</result>
 		</action>
+		<action name="commentary" class="com.huoshi.im.action.CommentaryAction">
+			<result name="error">/index.jsp</result>
+			<result name="success">/commentary.jsp</result>
+		</action>
 	</package>
 
 	<package name="json" extends="struts-default">
