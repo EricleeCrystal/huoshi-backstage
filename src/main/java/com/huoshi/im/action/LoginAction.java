@@ -13,7 +13,7 @@ import com.huoshi.im.vo.Operator;
  * 内部登陆
  * 
  * @author: Ericlee
- * @date:2014-04-07 23:04:49
+ * @date:2014-03-12 23:54:54
  */
 @SuppressWarnings("serial")
 @Service

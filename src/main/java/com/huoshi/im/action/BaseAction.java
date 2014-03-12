@@ -13,7 +13,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * 使用ioc方式获取请求的request,response和session
  * 
  * @author: Ericlee
- * @date:2014-16-01 23:16:08
+ * @date:2014-03-12 23:54:54
  */
 @SuppressWarnings("serial")
 public class BaseAction extends ActionSupport implements SessionAware, ServletRequestAware, ServletResponseAware {
