@@ -40,6 +40,10 @@
 			<result name="error">/index.jsp</result>
 			<result name="success">/commentary.jsp</result>
 		</action>
+		<action name="comment" class="com.huoshi.im.action.CommentAction">
+			<result name="error">/index.jsp</result>
+			<result name="success">/comment.jsp</result>
+		</action>
 	</package>
 
 	<package name="json" extends="struts-default">
