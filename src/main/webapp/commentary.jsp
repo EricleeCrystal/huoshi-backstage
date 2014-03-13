@@ -10,7 +10,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 	<head>
     	<base href="<%=basePath%>">
-    	<title>${chapter.getBook().getBookName()} 第${chapter.getChapterNo()}章</title>
+      <%
+        Chapter chapter = (Chapter)request.getAttribute("chapter");
+      %>
+    	<title><%=chapter.getBook().getBookName()%> 第<%=chapter.getChapterNo()%>章</title>
       
     <meta charset="UTF-8">
 		<meta http-equiv="pragma" content="no-cache">
@@ -91,11 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<body>
       <div class="body">
         <div class="title">
-          <%
-            Chapter chapter = request.getAttribute("chapter");
-          %>
-
-          <div class="chapter">第${chapter.getChapterNo()章</div>
+          <div class="chapter"><%=chapter.getBook().getBookName()%> 第<%=chapter.getChapterNo()%>章</div>
         </div>
         <div class="commentarys">
         <%

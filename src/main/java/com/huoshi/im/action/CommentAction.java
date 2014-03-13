@@ -1,35 +1,38 @@
 package com.huoshi.im.action;
 
-import java.util.Collections;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.bean.PageResult;
 import com.huoshi.im.service.BookService;
+import com.huoshi.im.service.CommentService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.Book;
 import com.huoshi.im.vo.Chapter;
-import com.huoshi.im.vo.Commentary;
+import com.huoshi.im.vo.Comment;
 
-@Service
-@Scope("prototye")
 @SuppressWarnings("serial")
-public class CommentaryAction extends BaseAction {
+@Service
+@Scope("prototype")
+public class CommentAction extends BaseAction {
+
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private BookService bookService;
 
     @Setter
     private int chapterId;
+    @Setter
+    private int pageNo;
+    @Setter
+    private int pageSize;
 
     @Getter
     private Chapter chapter;
     @Getter
-    private Book book;
-    @Getter
-    private List<Commentary> commentaryList = Collections.emptyList();
-
-    @Autowired
-    private BookService bookService;
+    private PageResult<Comment> pageResult;
 
     @Override
     public String execute() throws Exception {
@@ -37,7 +40,7 @@ public class CommentaryAction extends BaseAction {
         if (EmptyUtil.isEmpty(chapter)) {
             return ERROR;
         }
-        commentaryList = bookService.queryCommentaryByChapter(chapter);
+        pageResult = commentService.queryByChapter(chapter, pageNo, pageSize);
         return super.execute();
     }
 }

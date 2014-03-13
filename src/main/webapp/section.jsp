@@ -105,6 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="book"><s:property value="book.getBookName()"/></div>
           <div class="chapter">第<s:property value="chapter.getChapterNo()"/>章</div>
           <a href="./commentary?chapterId=${chapter.getSeqId()}">注解</a>
+          <a href="./comment?chapterId=${chapter.getSeqId()}">评论</a>
         </div>
 
         <div class="sections">
@@ -125,7 +126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   }else{//内容
                       %>
                       <div class="sectionNo"><%=section.getSectionNo()%></div>
-                      <div class="sectionText"><a href="./comment"><%=section.getSectionText()%><a></div>
+                      <div class="sectionText"><%=section.getSectionText()%></div>
                       <%
                   }
                 %>
