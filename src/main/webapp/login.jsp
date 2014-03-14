@@ -51,8 +51,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<body>
 
       <div class="msg">
-        <%if(request.getSession().getAttribute("msg") != null)%>
-        <%=request.getSession().getAttribute("msg")%>
+        <%
+          if(request.getAttribute("msg") != null){
+        %>
+          <%=request.getAttribute("msg")%>
+        <%
+          }
+        %>
       <div>
 
       <form action="login" method="post">

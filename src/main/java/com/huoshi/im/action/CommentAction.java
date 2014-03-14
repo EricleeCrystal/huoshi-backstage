@@ -22,6 +22,7 @@ public class CommentAction extends BaseAction {
     @Autowired
     private BookService bookService;
 
+    private static int defaultChapterId = 1;
     @Setter
     private int chapterId;
     @Setter
@@ -42,5 +43,11 @@ public class CommentAction extends BaseAction {
         }
         pageResult = commentService.queryByChapter(chapter, pageNo, pageSize);
         return super.execute();
+    }
+
+    @Override
+    public void validate() {
+        chapterId = chapterId < defaultChapterId ? defaultChapterId : chapterId;
+        super.validate();
     }
 }

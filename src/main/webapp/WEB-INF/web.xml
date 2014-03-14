@@ -10,7 +10,7 @@
 
 	<filter>
 		<filter-name>struts</filter-name>
-		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		<filter-class>com.huoshi.im.filter.HuoshiFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
