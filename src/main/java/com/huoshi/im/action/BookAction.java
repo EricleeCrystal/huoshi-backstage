@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.huoshi.im.service.BookService;
-import com.huoshi.im.vo.Book;
+import com.huoshi.im.vo.BookVo;
 
 @SuppressWarnings("serial")
 @Service
@@ -14,13 +14,13 @@ import com.huoshi.im.vo.Book;
 public class BookAction extends BaseAction {
 
     @Getter
-    private List<Book> bookList;
+    private List<BookVo> bookVoList;
     @Autowired
     private BookService bookService;
 
     @Override
     public String execute() throws Exception {
-        bookList = bookService.queryAllBooks();
+        bookVoList = bookService.queryAllBookVos();
         return super.execute();
     }
 }

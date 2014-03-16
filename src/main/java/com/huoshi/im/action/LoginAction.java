@@ -5,9 +5,9 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.po.Operator;
 import com.huoshi.im.service.OperatorService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.Operator;
 
 /**
  * 内部登陆

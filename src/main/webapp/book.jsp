@@ -49,10 +49,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<body>
       <div class="title">圣经</div>
       <div class="books">
-        <s:iterator id="book" value="bookList">
+        <s:iterator id="bookVo" value="bookVoList">
           <div class="book">
-            <a href="./chapter?bookId=${book.getSeqId()}">
-              <s:property value="#book.getBookName()"/>
+            <a href="./chapter?bookId=${bookVo.getSeqId()}">
+              <s:property value="#bookVo.getBookName()"/>
             </a>
           </div>
         </s:iterator>

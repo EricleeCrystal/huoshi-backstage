@@ -7,11 +7,11 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.po.Book;
+import com.huoshi.im.po.Chapter;
+import com.huoshi.im.po.Commentary;
 import com.huoshi.im.service.BookService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.Book;
-import com.huoshi.im.vo.Chapter;
-import com.huoshi.im.vo.Commentary;
 
 @Service
 @Scope("prototye")

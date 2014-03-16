@@ -1,6 +1,5 @@
 package com.huoshi.im.action;
 
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -8,16 +7,14 @@ import org.springframework.stereotype.Service;
 import com.huoshi.im.po.Chapter;
 import com.huoshi.im.service.BookService;
 import com.huoshi.im.service.CommentService;
-import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.BookVo;
-import com.huoshi.im.vo.ChapterVo;
+import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.vo.CommentVo;
 import com.huoshi.im.vo.Page;
 
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")
-public class CommentAction extends BaseAction {
+public class PullCommentAction extends BaseAction {
 
     @Autowired
     private CommentService commentService;
@@ -34,23 +31,11 @@ public class CommentAction extends BaseAction {
     @Setter
     private int pageSize;
 
-    @Getter
-    private BookVo bookVo;
-    @Getter
-    private ChapterVo chapterVo;
-    @Getter
-    private Page<CommentVo> page;
-
     @Override
-    public String execute() throws Exception {
+    public void process() throws Exception {
         Chapter chapter = bookService.queryChapterById(chapterId);
-        if (EmptyUtil.isEmpty(chapter)) {
-            return ERROR;
-        }
-        chapterVo = new ChapterVo(chapter);
-        bookVo = new BookVo(chapter.getBook());
-        page = commentService.queryVoPageByChapter(chapter, pageNo, pageSize);
-        return super.execute();
+        Page<CommentVo> page = commentService.queryVoPageByChapter(chapter, pageNo, pageSize);
+        write(JsonUtil.toRtnMsgJson(page));
     }
 
     @Override

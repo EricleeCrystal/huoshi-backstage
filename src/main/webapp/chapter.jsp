@@ -8,8 +8,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-    	<base href="<%=basePath%>">
-    	<title>章目录</title>
+  	<base href="<%=basePath%>">
+    <%
+      BookVo bookVo=(BookVo)request.getAttribute("bookVo");
+    %>
+  	<title><%=bookVo.getBookName()%> 章目录</title>
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
 		<meta http-equiv="expires" content="0">    
@@ -57,18 +60,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<body>
       <div class="body">
         <div class="book">
-          <s:property value="book.getBookName()"/>
+          <%=bookVo.getBookName()%>
         </div>
         <div class="chapters">
           <%
-            Book book=(Book)request.getAttribute("book");
+            
             int chapterCount = 0;
-            if(book != null){
-              chapterCount = book.getChapterCount();
+            if(bookVo != null){
+              chapterCount = bookVo.getChapterCount();
             }
             for(int i = 1; i <= chapterCount; i++){%>
               <div class="chapter">
-                <a href="./section?bookId=${book.getSeqId()}&chapterNo=<%=i%>">
+                <a href="./section?bookId=${bookVo.getSeqId()}&chapterNo=<%=i%>">
                   <%=i%>
                 </a>
               </div>

@@ -7,11 +7,13 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.po.Book;
+import com.huoshi.im.po.Chapter;
 import com.huoshi.im.service.BookService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.Book;
-import com.huoshi.im.vo.Chapter;
-import com.huoshi.im.vo.Section;
+import com.huoshi.im.vo.BookVo;
+import com.huoshi.im.vo.ChapterVo;
+import com.huoshi.im.vo.SectionVo;
 
 @SuppressWarnings("serial")
 @Service
@@ -23,30 +25,36 @@ public class SectionAction extends BaseAction {
     @Setter
     private int chapterNo;
     @Getter
-    private Book book;
+    private BookVo bookVo;
     @Getter
-    private Chapter chapter;
+    private ChapterVo chapterVo;
     @Autowired
     private BookService bookService;
 
     @Getter
-    private List<Section> sectionList = Collections.emptyList();
+    private List<SectionVo> sectionVoList = Collections.emptyList();
     @Getter
     private String msg = null;
 
     @Override
     public String execute() throws Exception {
-        book = bookService.queryByBookId(bookId);
+        Book book = bookService.queryBookById(bookId);
         if (EmptyUtil.isEmpty(book)) {
             msg = String.format("找不到编号为 %d 的圣经书目", bookId);
             return ERROR;
         }
-        chapter = bookService.queryByChapterNo(book, chapterNo);
+        // 将po对象转换为vo对象
+        bookVo = new BookVo(book);
+
+        Chapter chapter = bookService.queryChapterByBookAndNo(book, chapterNo);
         if (EmptyUtil.isEmpty(chapter)) {
-            msg = String.format("%s 找不到编号为 %d 的章节", book.getBookName(), chapterNo);
+            msg = String.format("%s 找不到编号为 %d 的章节", bookVo.getBookName(), chapterNo);
             return ERROR;
         }
-        sectionList = bookService.querySectionByChapter(chapter);
+        chapterVo = new ChapterVo(chapter);
+
+        sectionVoList = bookService.querySectionVoByChapter(chapter);
+
         return super.execute();
     }
 }

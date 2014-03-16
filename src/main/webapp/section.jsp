@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
 	<head>
     	<base href="<%=basePath%>">
-    	<title>${book.getBookName()} 第${chapter.getChapterNo()}章</title>
+    	<title>${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章</title>
       
     <meta charset="UTF-8">
 		<meta http-equiv="pragma" content="no-cache">
@@ -102,31 +102,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<body>
       <div class="body">
         <div class="title">
-          <div class="book"><s:property value="book.getBookName()"/></div>
-          <div class="chapter">第<s:property value="chapter.getChapterNo()"/>章</div>
-          <a href="./commentary?chapterId=${chapter.getSeqId()}">注解</a>
-          <a href="./comment?chapterId=${chapter.getSeqId()}">评论</a>
+          <div class="book"><s:property value="bookVo.getBookName()"/></div>
+          <div class="chapter">第<s:property value="chapterVo.getChapterNo()"/>章</div>
+          <a href="./commentary?chapterId=${chapterVo.getSeqId()}">注解</a>
+          <a href="./comment?chapterId=${chapterVo.getSeqId()}">评论</a>
         </div>
 
         <div class="sections">
         <%
-          List<Section>sectionList = (List<Section>)request.getAttribute("sectionList");
-          for(Section section:sectionList){
+          List<SectionVo>sectionVoList = (List<SectionVo>)request.getAttribute("sectionVoList");
+          for(SectionVo sectionVo:sectionVoList){
             %>
               <div class="section">
                 <%
-                  if(section.getTitle()==1){//主标题
+                  if(sectionVo.getTitle()==1){//主标题
                       %>
-                        <div class="sectionTitle"><%=section.getSectionText()%></div>
+                        <div class="sectionTitle"><%=sectionVo.getSectionText()%></div>
                       <%
-                  }else if(section.getTitle()==2){//副标题
+                  }else if(sectionVo.getTitle()==2){//副标题
                       %>
-                        <div class="sectionTitle"><%=section.getSectionText()%></div>
+                        <div class="sectionTitle"><%=sectionVo.getSectionText()%></div>
                       <%
                   }else{//内容
                       %>
-                      <div class="sectionNo"><%=section.getSectionNo()%></div>
-                      <div class="sectionText"><%=section.getSectionText()%></div>
+                      <div class="sectionNo"><%=sectionVo.getSectionNo()%></div>
+                      <div class="sectionText"><%=sectionVo.getSectionText()%></div>
                       <%
                   }
                 %>

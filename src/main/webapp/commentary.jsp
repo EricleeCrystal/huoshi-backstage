@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<head>
     	<base href="<%=basePath%>">
       <%
-        Chapter chapter = (Chapter)request.getAttribute("chapter");
+        ChapterVo chapterVo = (ChapterVo)request.getAttribute("chapterVo");
       %>
     	<title><%=chapter.getBook().getBookName()%> 第<%=chapter.getChapterNo()%>章</title>
       
