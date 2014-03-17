@@ -21,6 +21,10 @@ public class UpdateCommentAction extends BaseAction {
     @Setter
     private String userName;
     @Setter
+    private String createTime;
+    @Setter
+    private int floorNo;
+    @Setter
     private String content;
     @Setter
     private int forbid;
@@ -43,10 +47,9 @@ public class UpdateCommentAction extends BaseAction {
             write(JsonUtil.toErrorRtnMsgJson(result));
             return;
         }
-
         // 首先查找用户名是否已经注册 如果已经注册 使用原有的用户如果没有注册 新注册一个
         User user = userService.registerifAbsent(userName);
-        CommentVo commentVo = commentService.updateComment(user, cid, content, forbid <= 0 ? false : true);
+        CommentVo commentVo = commentService.updateComment(user, cid, createTime, floorNo, content, forbid <= 0 ? false : true);
         write(JsonUtil.toRtnMsgJson(commentVo));
     }
 }

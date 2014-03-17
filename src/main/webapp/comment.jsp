@@ -20,7 +20,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<meta http-equiv="description" content="This is my page">
 
     <link rel="stylesheet" href="static/css/jquery.ui.all.css">
-
     <script src="static/script/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="static/script/ui/jquery.ui.core.js"></script>
     <script src="static/script/ui/jquery.ui.widget.js"></script>
@@ -63,6 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         position: relative;
         float: left;
         margin-top: 10px;
+        margin-bottom: 20px;
         width: 100%;
         font-size: 14pt;
         text-align: center;
@@ -172,7 +172,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         padding: 5px 20px;
         margin-left: 450px;
         margin-bottom: 10px;
-        display: none;
+        display: block;
       }
       #load{
         position: relative;
@@ -247,50 +247,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       .form .input .remark{
         margin-left: 10px;
       }
+      #save{
+        position: relative;
+        float: right;
+        margin: 10px 0;
+      }
     </style>
 
     <script type="text/javascript">
       $(function(){
-
-        //新增
-        $("#submit").click(function(){
-          var userNameText = $.trim($("#userName").text());
-          var contentText = $.trim($("#content").text());
-          if(userNameText==null || userNameText.length == 0){
-            alert("用户名不能为空");
-          }else if(contentText==null || contentText.length == 0){
-            alert("评论内容不能为空");
-          }else{
-            $.post(
-                "saveComment",
-                {
-                  chapterId:${chapterVo.getSeqId()},
-                  userName:userNameText,
-                  content:contentText
-                },
-                function(data){
-                  if(data.rtn == 0){
-                    var html = "<div class=\"comment\"><div class=\"index\"><span class=\"user\">"
-                      + data.data.userName
-                      + "</span><span class=\"time\">"
-                      + data.data.createTime
-                      + "</span><span class=\"floor\">"
-                      + data.data.floorNo
-                      + "楼</span></div><div class=\"content\">"
-                      + data.data.content
-                      + "</div><div class=\"button edit\" cid=\""
-                      + data.data.seqId
-                      + "\">修改</div></div>";
-                      $(".comments").prepend(html);
-                  }else{
-                      $("#msg").html(data.data);
-                  }
-                },
-                "json"
-              );
-          }
-        });
-
+        //加载更多
         $("#load").click(function(event) {
           var pageNoVar = parseInt($("#load").attr("pageno"));
           var pageTotalVar = parseInt($("#load").attr("pagetotal"));
@@ -309,13 +275,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     var arr=eval(data.data.list);
                     var htmlArr = new Array();
                     for(var i = 0; i < arr.length; i++){
-                      var html = "<div class=\"comment\"><div class=\"index\"><span class=\"user\">"
+                      var forbidHtml = "";
+                      if(arr[i].forbid == true){
+                        forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
+                      }else{
+                        forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
+                      }
+                      var html = "<div class=\"comment\" commentid=\""
+                        + arr[i].seqId
+                        + "\"><div class=\"index\"><span class=\"user\">"
                         + arr[i].userName
                         + "</span><span class=\"time\">"
                         + arr[i].createTime
                         + "</span><span class=\"floor\">"
                         + arr[i].floorNo
-                        + "楼</span></div><div class=\"content\">"
+                        + "楼</span>"
+                        + forbidHtml
+                        + "</div><div class=\"content\">"
                         + arr[i].content
                         + "</div><div class=\"button edit\" cid=\""
                         + arr[i].seqId
@@ -341,11 +317,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
         });
 
+        var userName = $( "#userName" ),
+        content = $( "#content" ),
 
-        var name = $( "#name" ),
-        email = $( "#email" ),
-        password = $( "#password" ),
-        allFields = $( [] ).add( name ).add( email ).add( password ),
+        allFields = $( [] ).add( userName ).add( content ),
 
         tips = $(".validateTips");
         //拖拽
@@ -387,18 +362,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           var index = $(this).prev().prev();
           var userName = $(index).children("span[class='user']").html();
           var time = $(index).children("span[class='time']").html();
-          var floorNo = $(index).children("span[class='floor']").html();
+          var floorNoText = $(index).children("span[class='floor']").html();
+          var floorNo = $(index).children("span[class='floor']").attr("floorNo");
           var isforbid = parseInt($(index).children("span[class^='forbid']").attr("isforbid"));
           if(isforbid == 1){
-            $("#forbid").attr("checked",'true');
+            $("#forbid").prop("checked",'checked');
           }else{
             $("#forbid").removeAttr("checked");
           }
-
           $("#dialog-update").attr("cid",cid);
           $("#updateUserName").html(userName);
           $("#updateTime").html(time);
-          $("#updateFloor").html(floorNo);
+          $("#updateFloor").html(floorNoText);
+          $("#updateFloor").attr("floorNo",floorNo);        
           $("#updateContent").html(content);
           $("#dialog-update").dialog("open");
         });
@@ -414,37 +390,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               var bValid = true;
               allFields.removeClass( "ui-state-error" );
               bValid = bValid && checkLength($("#updateUserName"), "username", 3, 30 );
+              
+              var forbidText = 0;
+              if($("#forbid").is(':checked') == true){
+                forbidText = 1;
+              }
               //验证字段合法性 如果不合法 则提示
               if ( bValid ) {
                 //更新界面内容
                 $.post(
-                  "saveComment",
+                  "updateComment",
                   {
-                    chapterId:${chapterVo.getSeqId()},
-                    userName:userNameText,
-                    content:contentText
+                    cid: $("#dialog-update").attr("cid"),
+                    userName: $("#updateUserName").html(),
+                    createTime:$("#updateTime").html(),
+                    floorNo:$("#updateFloor").attr("floorNo"),
+                    content:$("#updateContent").html(),
+                    forbid:forbidText
                   },
                   function(data){
                     if(data.rtn == 0){
-                      var html = "<div class=\"comment\"><div class=\"index\"><span class=\"user\">"
+                      var forbidHtml = "";
+                      if(data.data.forbid == true){
+                        forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
+                      }else{
+                        forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
+                      }
+                      var htmlText = "<div class=\"index\"><span class=\"user\">"
                         + data.data.userName
                         + "</span><span class=\"time\">"
                         + data.data.createTime
                         + "</span><span class=\"floor\">"
                         + data.data.floorNo
-                        + "楼</span></div><div class=\"content\">"
+                        + "楼</span>" + forbidHtml + "</div><div class=\"content\">"
                         + data.data.content
                         + "</div><div class=\"button edit\" cid=\""
                         + data.data.seqId
-                        + "\">修改</div></div>";
-                        $(".comments").prepend(html);
+                        + "\">修改</div>";
+                        $("div[commentId="+ data.data.seqId + "]").html(htmlText);
                     }else{
                         $("#msg").html(data.data);
                     }
                   },
                   "json"
                 );
-
                 $(this).dialog("close");
               }
             },
@@ -455,6 +444,67 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           close: function() {
             allFields.val("").removeClass("ui-state-error");
           }
+        });
+
+        $( "#dialog-save" ).dialog({
+          autoOpen: false,
+          height: 400,
+          width: 600,
+          modal: true,
+          position:['center','top'],    // 赋值弹出坐标位置
+          buttons: {
+            "添加": function() {
+              var bValid = true;
+              allFields.removeClass( "ui-state-error" );
+              bValid = bValid && checkLength($("#userName"), "username", 3, 30 );
+              bValid = bValid && checkLength($("#content"), "content", 1, 1000 );              
+              var userNameText = $.trim($("#userName").text());
+              var contentText = $.trim($("#content").text());
+              //验证字段合法性 如果不合法 则提示
+              if ( bValid ) {
+                $.post(
+                    "saveComment",
+                    {
+                      chapterId:${chapterVo.getSeqId()},
+                      userName:userNameText,
+                      content:contentText
+                    },
+                    function(data){
+                      if(data.rtn == 0){
+                        var html = "<div class=\"comment\" commentid=\""
+                          + data.data.seqId
+                          + "\"><div class=\"index\"><span class=\"user\">"
+                          + data.data.userName
+                          + "</span><span class=\"time\">"
+                          + data.data.createTime
+                          + "</span><span class=\"floor\">"
+                          + data.data.floorNo
+                          + "楼</span><span class=\"forbid\" isforbid=\"0\">显示</span></div><div class=\"content\">"
+                          + data.data.content
+                          + "</div><div class=\"button edit\" cid=\""
+                          + data.data.seqId
+                          + "\">修改</div></div>";
+                          $(".comments").prepend(html);
+                      }else{
+                          $("#msg").html(data.data);
+                      }
+                    },
+                    "json"
+                  );
+                $(this).dialog("close");
+              }
+            },
+            Cancel: function() {
+              $(this).dialog("close");
+            }
+          },
+          close: function() {
+            allFields.val("").removeClass("ui-state-error");
+          }
+        });
+
+        $("#save").click(function(event){
+          $("#dialog-save").dialog("open");
         });
 
       });
@@ -474,7 +524,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
         <div class="input">
           <div class="desc">楼层</div>
-          <div class="contentEdit" id="updateFloor"></div>
+          <div class="contentEdit" id="updateFloor" floorNo="0"></div>
         </div>
         <div class="input">
           <div class="desc">内  容</div>
@@ -487,10 +537,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       </div>
     </div>
 
-    <div class="body">
-      <div class="title">
-        <div class="chapter">${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章</div>
-      </div>
+    <div id="dialog-save" title="添加评论" cid="0">
+      <p class="validateTips"></p>
       <div class="form">
         <div class="input">
           <div class="desc">用户名</div>
@@ -501,9 +549,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="contentEdit" contenteditable="true" id="content"></div>
         </div>
         <div class="input">
-          <div id="submit" class="button">提交</div>
+          <div class="desc">禁止</div>
+          <input type="checkbox" id="forbid"><span class="remark">禁止后该评论对用户不可见</span>
         </div>
       </div>
+    </div>
+
+    <div class="body">
+      <div class="title">
+        <div class="chapter">${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章</div>
+      </div>
+
+      <div class="button" id="save">
+        添加评论
+      </div>
+
       <div id="msg" hidden="true">添加成功</div>
       <%
         Page<CommentVo> data = (Page<CommentVo>)request.getAttribute("page");
@@ -512,11 +572,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <%
           for(CommentVo commentVo:data.getList()){
             %>
-              <div class="comment">
+              <div class="comment" commentid="<%=commentVo.getSeqId()%>">
                 <div class="index">
                   <span class="user"><%=commentVo.getUserName()%></span>
                   <span class="time"><%=commentVo.getCreateTime()%></span>
-                  <span class="floor"><%=commentVo.getFloorNo()%> 楼</span>                  
+                  <span class="floor" floorNo="<%=commentVo.getFloorNo()%>"><%=commentVo.getFloorNo()%> 楼</span>                  
                   <% if(commentVo.isForbid()){
                     %><span class="forbid warn" isforbid="1">屏蔽</span><%
                   }else{
