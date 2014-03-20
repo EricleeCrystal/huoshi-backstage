@@ -34,12 +34,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <style type="text/css">
       body{
+        width: 100%;
         position: relative;
         float: left;
         margin: 0;
         background-color: #F5F5F5;
         font-size: 62.5%;
         font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+        text-align: center;
       }
       a{
         cursor: pointer;
@@ -150,21 +152,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         position: relative;
         float: right;
       }
-
       #loadmsg{
         position: relative;
         float: left;
-        padding: 5px 20px;
-        margin-left: 450px;
+        width: 100%;
         margin-bottom: 10px;
         display: block;
       }
-      #load{
+      .loadbt{
         position: relative;
         float: left;
-        padding: 5px 20px;
-        margin-left: 450px;
+        width: 100%;
+        margin-bottom: 10px;
+        display: block;
         margin-bottom: 100px;
+        text-align: center;
+      }
+      #load{
+        padding: 5px 20px;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       table {
@@ -253,10 +261,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <script type="text/javascript">
       $(function(){
-        //加载更多
         $("#load").click(function(event) {
           var pageNoVar = parseInt($("#load").attr("pageno"));
-          var pageTotalVar = parseInt($("#load").attr("pagetotal"));
+          var pageTotalVar = parseInt($("#load").attr("pasgetotal"));
           $("#loadmsg").css('display','block'); 
           if(pageNoVar < pageTotalVar){
             pageNoVar = pageNoVar + 1;
@@ -591,7 +598,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         %>
       </div>
       <div id="loadmsg">加载完成</div>
-      <div id="load" class="button" pagetotal="<%=data.getPageTotal()%>" pageno="<%=data.getPageNo()%>">加载更多</div>
+      <div class="loadbt">
+        <div id="load" class="button" pagetotal="<%=data.getPageTotal()%>" pageno="<%=data.getPageNo()%>">加载更多</div>
+      </div>
     </div>
 	</body>
 </html>
