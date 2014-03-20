@@ -79,21 +79,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-bottom: 5px;
       }
       
-      #userName{
-        width: 150px;
-        min-height: 20px;
-      }
-
-      #content{
-        width: 400px;
-        min-height: 100px;
-      }
-      #submit{
-        position: relative;
-        float: left;
-        margin: 10px 250px;
-      }
-
       .button{
         cursor: pointer;
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -202,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       }
       .validateTips { border: 1px solid transparent; padding: 0.3em; }
 
-    .form{
+      .form{
         position: relative;
         float: left;
         width: 100%;
@@ -231,6 +216,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         font-size: 13px;
         font-family: arial,sans-serif;
       }
+      #userName{
+        width: 150px;
+        min-height: 20px;
+      }
+
+      #content{
+        width: 400px;
+        min-height: 100px;
+      }
+
       #updateUserName,#updateTime,#updateFloor{
         position: relative;
         float: left;
@@ -243,6 +238,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
         width: 400px;
         min-height: 100px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       .form .input .remark{
         margin-left: 10px;
@@ -418,11 +415,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                       }
                       var htmlText = "<div class=\"index\"><span class=\"user\">"
                         + data.data.userName
-                        + "</span><span class=\"time\">"
+                        + "</span><span class=\"time\"> "
                         + data.data.createTime
-                        + "</span><span class=\"floor\">"
+                        + "</span><span class=\"floor\" floorno=\""+ data.data.floorNo +"\">"
                         + data.data.floorNo
-                        + "楼</span>" + forbidHtml + "</div><div class=\"content\">"
+                        + " 楼</span>" + forbidHtml + "</div><div class=\"content\">"
                         + data.data.content
                         + "</div><div class=\"button edit\" cid=\""
                         + data.data.seqId
@@ -479,7 +476,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                           + data.data.createTime
                           + "</span><span class=\"floor\">"
                           + data.data.floorNo
-                          + "楼</span><span class=\"forbid\" isforbid=\"0\">显示</span></div><div class=\"content\">"
+                          + " 楼</span><span class=\"forbid\" isforbid=\"0\">显示</span></div><div class=\"content\">"
                           + data.data.content
                           + "</div><div class=\"button edit\" cid=\""
                           + data.data.seqId
