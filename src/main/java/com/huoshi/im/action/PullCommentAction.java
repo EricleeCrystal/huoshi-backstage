@@ -29,12 +29,14 @@ public class PullCommentAction extends BaseAction {
     @Setter
     private int pageNo;
     @Setter
+    private int cid;
+    @Setter
     private int pageSize;
 
     @Override
     public void process() throws Exception {
         Chapter chapter = bookService.queryChapterById(chapterId);
-        Page<CommentVo> page = commentService.queryVoPageByChapter(chapter, pageNo, pageSize);
+        Page<CommentVo> page = commentService.queryVoPageByChapter(chapter, pageNo, pageSize, cid);
         write(JsonUtil.toRtnMsgJson(page));
     }
 
@@ -43,6 +45,10 @@ public class PullCommentAction extends BaseAction {
         chapterId = chapterId < defaultChapterId ? defaultChapterId : chapterId;
         pageNo = pageNo < defaultPageNo ? defaultPageNo : pageNo;
         pageSize = pageNo < defaultPageSize ? defaultPageSize : pageSize;
+        if (cid > 0) {
+            pageNo = 0;
+        }
+        cid = cid < 0 ? 0 : cid;
         super.validate();
     }
 }

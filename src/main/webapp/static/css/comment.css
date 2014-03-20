@@ -1,0 +1,235 @@
+body {
+    width: 100%;
+    position: relative;
+    float: left;
+    margin: 0;
+    background-color: #F5F5F5;
+    font-size: 62.5%;
+    font-family:"Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    text-align: center;
+}
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #000000;
+}
+a:hover {
+    color: #6E6E6E;
+}
+.body {
+    font-family: arial, sans-serif;
+    width: 80%;
+    min-width: 800px;
+    position: relative;
+    height: 100%;
+    margin-left: 10%;
+    text-align: center;
+}
+.body * {
+    position: relative;
+    float: left;
+}
+.title {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 14pt;
+}
+.title .chapter {
+    width: 100%;
+    text-align: center;
+}
+.button {
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #F5F5F5;
+    font-family: arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 29px;
+    line-height: 27px;
+    min-width: 54px;
+    padding: 0 8px;
+    text-align: center;
+}
+#save {
+    position: relative;
+    float: right;
+    margin: 10px 0;
+}
+.comments {
+    width: 100%;
+    left: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.comment {
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.index {
+    width: 100%;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.index * {
+    font-size: 13px;
+}
+.index .user {
+    width: 100px;
+    padding: 0 5px;
+}
+.index .time {
+    width: 150px;
+    font-size: 13px;
+    padding-left: 20px;
+}
+.index .floor {
+    width: 50px;
+    float: right;
+    text-align: right;
+    margin-right: 100px;
+}
+.index .forbid {
+    width: 50px;
+    float: right;
+    margin-right: 250px;
+    text-align: center;
+}
+.warn {
+    color: red;
+}
+.content {
+    font-size: 12px;
+    width: 80%;
+    margin: 5px;
+    padding: 5px;
+    left: 10px;
+}
+.edit {
+    float: right;
+}
+#loadmsg {
+    position: relative;
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    display: none;
+}
+.loadbt {
+    width: 100%;
+    margin-bottom: 10px;
+    display: block;
+    margin-bottom: 100px;
+}
+.loadbt div {
+    padding: 5px 20px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+}
+/*dialog jquery ui依赖的*/
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
+label, input {
+    display:block;
+}
+input.text {
+    margin-bottom:12px;
+    width:95%;
+    padding: .4em;
+}
+fieldset {
+    padding:0;
+    border:0;
+    margin-top:25px;
+}
+h1 {
+    font-size: 1.2em;
+    margin: .6em 0;
+}
+div#users-contain {
+    width: 350px;
+    margin: 20px 0;
+}
+div#users-contain table {
+    margin: 1em 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+div#users-contain table td, div#users-contain table th {
+    border: 1px solid #eee;
+    padding: .6em 10px;
+    text-align: left;
+}
+.ui-dialog .ui-state-error {
+    padding: .3em;
+    position: fixed;
+}
+.validateTips {
+    border: 1px solid transparent;
+    padding: 0.3em;
+}
+/*dialog 表单*/
+.form {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.form .input {
+    position: relative;
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+.form .input * {
+    position: relative;
+    float: left;
+}
+.form .input .desc {
+    position: relative;
+    float: left;
+    width: 70px;
+    font-size: 14px;
+}
+.contentEdit {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin:0;
+    padding: 4px 6px 4px;
+    text-align: left;
+    font-size: 13px;
+    font-family: arial, sans-serif;
+}
+.form .input input[class="contentEdit"]{
+    width: 150px;
+    min-height: 20px;
+}
+.form .input textarea{
+    resize:none;
+    width: 400px;
+    min-height: 100px;
+}
+
+
+#updateUserName, #updateTime, #updateFloor {
+    position: relative;
+    float: left;
+    width: 150px;
+    min-height: 20px;
+    margin-top: -5px;
+}
+#updateContent {
+    position: relative;
+    float: left;
+    width: 400px;
+    min-height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.form .input .remark {
+    margin-left: 10px;
+}
