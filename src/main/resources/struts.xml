@@ -15,12 +15,35 @@
 	<constant name="struts.devMode" value="true" />
 
 	<package name="struts" extends="struts-default">
+
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<interceptor name="huoshiOpLoginInteceptor"
+				class="com.huoshi.im.interceptor.LoginInterceptor" />
+			<interceptor name="InterceptorLogin"
+				class="com.struts.interceptor.InterceptorLogin" />
+
+			<!-- 拦截器栈 -->
+			<interceptor-stack name="huoshiDefaultStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="huoshiOpLoginInteceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认的拦截器引用 应用到所有的action -->
+		<default-interceptor-ref name="huoshiDefaultStack"></default-interceptor-ref>
+
+		<!-- 定义全局Result -->
+		<global-results>
+			<!-- 当返回login视图名时，转入/login.jsp页面 -->
+			<result name="login">/login.jsp</result>
+		</global-results>
+
 		<action name="register" class="com.huoshi.im.action.RegisterAction">
 			<result name="success">/login.jsp</result>
 			<result name="error">/register.jsp</result>
 		</action>
 		<action name="login" class="com.huoshi.im.action.LoginAction">
-			<result name="success" type="redirectAction">wiMgrAction</result>
+			<result name="success" type="redirectAction">book</result>
 			<result name="error">/login.jsp</result>
 		</action>
 		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
