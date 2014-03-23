@@ -1,0 +1,99 @@
+body {
+    width: 100%;
+    position: relative;
+    float: left;
+    margin: 0;
+    background-color: #F5F5F5;
+    font-size: 62.5%;
+    font-family:"Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
+    text-align: center;
+}
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #000000;
+}
+a:hover {
+    color: #6E6E6E;
+}
+.body {
+    font-family: arial, sans-serif;
+    width: 80%;
+    min-width: 800px;
+    position: relative;
+    height: 100%;
+    margin-left: 10%;
+    text-align: center;
+}
+.body * {
+    position: relative;
+    float: left;
+}
+.title {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 14pt;
+    height: auto;
+}
+.title div {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.button {
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #F5F5F5;
+    font-family: arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 29px;
+    line-height: 27px;
+    min-width: 54px;
+    padding: 0 8px;
+    text-align: center;
+}
+/*dialog jquery ui依赖的*/
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
+label, input {
+    display:block;
+}
+input.text {
+    margin-bottom:12px;
+    width:95%;
+    padding: .4em;
+}
+fieldset {
+    padding:0;
+    border:0;
+    margin-top:25px;
+}
+h1 {
+    font-size: 1.2em;
+    margin: .6em 0;
+}
+div#users-contain {
+    width: 350px;
+    margin: 20px 0;
+}
+div#users-contain table {
+    margin: 1em 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+div#users-contain table td, div#users-contain table th {
+    border: 1px solid #eee;
+    padding: .6em 10px;
+    text-align: left;
+}
+.ui-dialog .ui-state-error {
+    padding: .3em;
+    position: fixed;
+}
+.validateTips {
+    border: 1px solid transparent;
+    padding: 0.3em;
+}

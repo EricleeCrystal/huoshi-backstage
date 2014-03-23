@@ -9,6 +9,7 @@ import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
+import com.huoshi.im.util.ValueUtil.HTMLUtil;
 import com.huoshi.im.vo.CommentVo;
 
 /**
@@ -50,6 +51,8 @@ public class SaveCommentAction extends BaseAction {
 
         // 首先查找用户名是否已经注册 如果已经注册 使用原有的用户如果没有注册 新注册一个
         User user = userService.registerifAbsent(userName);
+        // 将回车空格换成字符串形式
+        content = HTMLUtil.fromHtml(content);
         CommentVo commentVo = commentService.saveComment(user, chapterId, content);
         write(JsonUtil.toRtnMsgJson(commentVo));
     }

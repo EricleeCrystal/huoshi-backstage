@@ -44,7 +44,7 @@ public class PullCommentAction extends BaseAction {
     public void validate() {
         chapterId = chapterId < defaultChapterId ? defaultChapterId : chapterId;
         pageNo = pageNo < defaultPageNo ? defaultPageNo : pageNo;
-        pageSize = pageNo < defaultPageSize ? defaultPageSize : pageSize;
+        pageSize = pageSize < defaultPageSize ? defaultPageSize : pageSize;
         if (cid > 0) {
             pageNo = 0;
         }

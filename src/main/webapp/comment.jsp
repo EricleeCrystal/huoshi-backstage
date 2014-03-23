@@ -10,8 +10,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-    	<base href="<%=basePath%>">
-    	<title>${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章 评论</title>     
+  	<base href="<%=basePath%>">
+  	<title>${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章 评论</title>     
     <meta charset="UTF-8">
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
@@ -107,22 +107,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           $('.ui-dialog').css('position', "fixed");
         });
 
+        function parseContent(content){
+          //去掉html标签 将空格和回车换成相应字符
+          var contentText = content.replace(/<[^>]+>/g,"").replace(/(\r)*\n/g,"<br>").replace(/\s/g,"&nbsp;");
+          return contentText;
+        }
+
+        // 添加评论
         var userName = $("#userName"),
         content = $("#content"),
-        allFields = $([]).add(userName).add(content),
-        tips = $(".validateTips");
-        //拖拽
-        function updateTips(t) {
-            tips.text(t).addClass("ui-state-highlight");
+        allSaveFields = $([]).add(userName).add(content),
+        saveTips = $(".saveValidateTips");
+        //错误提示
+        function updateSaveTips(t) {
+            saveTips.text(t).addClass("ui-state-highlight");
             setTimeout(function() {
-              tips.removeClass( "ui-state-highlight", 1500 );
+              saveTips.removeClass( "ui-state-highlight", 1500 );
             }, 500 );
         }
         //更新字段提示
-        function checkLength( o, n, min, max ) {
-          if ( o.html().trim().length > max ||  o.html().trim().length < min ) {
+        function checkSaveLength( o, n, min, max ) {
+          if ( o.val().trim().length > max ||  o.val().trim().length < min ) {
             o.addClass( "ui-state-error" );
-            updateTips( "Length of " + n + " must be between " +
+            updateSaveTips( "Length of " + n + " must be between " +
               min + " and " + max + "." );
             return false;
           } else {
@@ -130,34 +137,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
         }
 
-        function checkRegexp( o, regexp, n ) {
+        function checkSaveRegexp( o, regexp, n ) {
           if (!( regexp.test(o.val()))) {
             o.addClass("ui-state-error");
-            updateTips(n);
+            updateSaveTips(n);
             return false;
           } else {
             return true;
           }
         }
 
-        // 添加评论
+
         $( "#dialog-save" ).dialog({
           autoOpen: false,
-          height: 350,
+          height: 300,
           width: 600,
           modal: true,
           position:['center','top'],    // 赋值弹出坐标位置
           buttons: {
             "添加": function() {
               var bValid = true;
-              allFields.removeClass( "ui-state-error" );
-              bValid = bValid && checkLength($("#userName"), "username", 3, 30 );
-              bValid = bValid && checkLength($("#content"), "content", 1, 1000 );              
-              var userNameText = $.trim($("#userName").text());
-              var contentText = $.trim($("#content").text());
+              allSaveFields.removeClass( "ui-state-error" );
+              bValid = bValid && checkSaveLength(userName, "username", 3, 30 );       
+              var userNameText = $.trim($("#userName").val());
+              var contentText = $.trim($("#content").val());
               //验证字段合法性 如果不合法 则提示
               if ( bValid ) {
-                $.post(
+                //去掉html标签
+                //contentText = parseContent(contentText);
+                  $.post(
                     "saveComment",
                     {
                       chapterId:${chapterVo.getSeqId()},
@@ -194,7 +202,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
           },
           close: function() {
-            allFields.val("").removeClass("ui-state-error");
+            allSaveFields.val("").removeClass("ui-state-error");
           }
         });
 
@@ -202,12 +210,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           $("#dialog-save").dialog("open");
         });
 
-
-
-
-
-
-        $(".edit").click(function(event) {
+        //更新评论操作
+        var updateUserName = $("#updateUserName"),
+        updateContent = $("#updateContent"),
+        allUpdateFields = $([]).add(updateUserName),
+        updateTips = $(".updateValidateTips");
+        //错误提示
+        function updateTips(t) {
+            updateTips.text(t).addClass("ui-state-highlight");
+            setTimeout(function() {
+              updateTips.removeClass( "ui-state-highlight", 1500 );
+            }, 500 );
+        }
+        function checkUpdateLength( o, n, min, max ) {
+          if ( o.val().trim().length > max ||  o.val().trim().length < min ) {
+            o.addClass( "ui-state-error" );
+            updateSaveTips( "Length of " + n + " must be between " +
+              min + " and " + max + "." );
+            return false;
+          } else {
+            return true;
+          }
+        }
+        
+        $('.comment').on('click', '.edit', function(event) {
           var cid = $(this).attr("cid");
           var content = $(this).prev().html();
           var index = $(this).prev().prev();
@@ -222,11 +248,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             $("#forbid").removeAttr("checked");
           }
           $("#dialog-update").attr("cid",cid);
-          $("#updateUserName").html(userName);
+          $("#updateUserName").val(userName);
           $("#updateTime").html(time);
           $("#updateFloor").html(floorNoText);
           $("#updateFloor").attr("floorNo",floorNo);        
-          $("#updateContent").html(content);
+          $("#updateContent").val(content);
+
           $("#dialog-update").dialog("open");
         });
 
@@ -239,9 +266,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           buttons: {
             "保存修改": function() {
               var bValid = true;
-              allFields.removeClass( "ui-state-error" );
-              bValid = bValid && checkLength($("#updateUserName"), "username", 3, 30 );
-              
+              allUpdateFields.removeClass( "ui-state-error" );
+              bValid = bValid && checkUpdateLength($("#updateUserName"), "username", 3, 30 );
+              var userNameText = $("#updateUserName").val();
+              var contentText = $("#updateContent").val();
+              //contentText = parseContent(contentText);
+
               var forbidText = 0;
               if($("#forbid").is(':checked') == true){
                 forbidText = 1;
@@ -253,10 +283,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   "updateComment",
                   {
                     cid: $("#dialog-update").attr("cid"),
-                    userName: $("#updateUserName").html(),
+                    userName: userNameText,
                     createTime:$("#updateTime").html(),
                     floorNo:$("#updateFloor").attr("floorNo"),
-                    content:$("#updateContent").html(),
+                    content:contentText,
                     forbid:forbidText
                   },
                   function(data){
@@ -293,7 +323,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
           },
           close: function() {
-            allFields.val("").removeClass("ui-state-error");
+            updateTips.val("").removeClass("ui-state-error");
           }
         });
 
@@ -302,12 +332,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </script>
   </head>
 	<body>
-    <div id="dialog-update" title="修改评论" cid="0">
-      <p class="validateTips"></p>
+    <div id="dialog-save" title="添加评论" cid="0">
+      <p class="saveValidateTips"></p>
       <div class="form">
         <div class="input">
           <div class="desc">用户名</div>
-          <div class="contentEdit" contenteditable="true" id="updateUserName"></div>
+          <input class="contentEdit" id="userName">
+        </div>
+        <div class="input">
+          <div class="desc">内  容</div>
+          <textarea class="contentEdit" id="content"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialog-update" title="修改评论" cid="0">
+      <p class="updateValidateTips"></p>
+      <div class="form">
+        <div class="input">
+          <div class="desc">用户名</div>
+          <input class="contentEdit" id="updateUserName">
         </div>
         <div class="input">
           <div class="desc">评论时间</div>
@@ -319,25 +363,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
         <div class="input">
           <div class="desc">内  容</div>
-          <div class="contentEdit" contenteditable="true" id="updateContent"></div>
-        </div>
-        <div class="input">
-          <div class="desc">禁止</div>
-          <input type="checkbox" id="forbid"><span class="remark">禁止后该评论对用户不可见</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="dialog-save" title="添加评论" cid="0">
-      <p class="validateTips"></p>
-      <div class="form">
-        <div class="input">
-          <div class="desc">用户名</div>
-          <input class="contentEdit" id="userName">
-        </div>
-        <div class="input">
-          <div class="desc">内  容</div>
-          <textarea class="contentEdit" id="content"></textarea>
+          <textarea class="contentEdit" id="updateContent"></textarea>
         </div>
         <div class="input">
           <div class="desc">禁止</div>
@@ -348,7 +374,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <div class="body">
       <div class="title">
-        <div class="chapter">${bookVo.getBookName()} 第${chapterVo.getChapterNo()}章</div>
+        <div class="chapter">${bookVo.getBookName()} <br> 第${chapterVo.getChapterNo()}章</div>
       </div>
 
       <div class="button" id="save">
