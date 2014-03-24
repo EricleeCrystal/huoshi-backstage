@@ -11,7 +11,7 @@ import com.huoshi.im.vo.SectionVo;
 
 @SuppressWarnings("serial")
 @Service
-@Scope("prototye")
+@Scope("prototype")
 public class ModifySectionAction extends BaseAction {
 
     @Setter
