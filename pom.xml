@@ -26,7 +26,7 @@
 			<version>1.12.2</version>
 			<scope>provided</scope>
 		</dependency>
-		<!---->
+
 		<dependency>
 			<groupId>com.huoshi.im</groupId>
 			<artifactId>huoshi-core</artifactId>
@@ -68,6 +68,19 @@
 			<artifactId>struts2-core</artifactId>
 			<version>${struts2.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>3.0.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javassist</groupId>
+					<artifactId>javassist</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-spring-plugin</artifactId>
@@ -201,7 +214,6 @@
 	</dependencies>
 
 	<build>
-
 		<finalName>huoshi-backstage</finalName>
 		<plugins>
 			<!-- 打包时不运行测试用例 -->
