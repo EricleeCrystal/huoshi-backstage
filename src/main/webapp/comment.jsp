@@ -38,8 +38,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <script type="text/javascript">
       $(function(){
+
+        function hello(){
+           $.get(
+                "pullComment",
+                {
+                  cid:0,
+                  chapterId:1,
+                  pageNo:1,
+                  refId:1
+                },
+                function(data){
+                  if(data.rtn == 0){
+                    var arr=eval(data.data.list);
+                    var htmlArr = new Array();
+                    for(var i = 0; i < arr.length; i++){
+                      var forbidHtml = "";
+                      if(arr[i].forbid == true){
+                        forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
+                      }else{
+                        forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
+                      }
+                      var html = "<div class=\"comment\" commentid=\""
+                        + arr[i].seqId
+                        + "\"><div class=\"index\"><span class=\"user\">"
+                        + arr[i].userName
+                        + "</span><span class=\"time\">"
+                        + arr[i].createTime
+                        + "</span><span class=\"floor\">"
+                        + arr[i].floorNo
+                        + "楼</span>"
+                        + forbidHtml
+                        + "</div><div class=\"content\">"
+                        + arr[i].content
+                        + "</div><div class=\"button edit\" cid=\""
+                        + arr[i].seqId
+                        + "\">修改</div></div>";
+                        htmlArr.push(html);
+                    }
+                    $(".comments").append(htmlArr.join(""));
+                    $("#load").attr("pageNo",0);
+                    $("#loadmsg").html("加载完成");
+                    $("#loadmsg").css('display','none'); 
+                  }else{
+                      $("#loadmsg").html("加载失败 请重试");
+                      $("#loadmsg").css('display','none'); 
+                  }
+                },
+                "json"
+              );
+        }
+
+
+
         // 加载更多按钮
         $("#load").click(function(event) {
+
+          hello();
+
           var lastCid = parseInt($(".comments>.comment:last-child").attr("commentid"));
           var pageNoVar = parseInt($("#load").attr("pageno"));
           var pageTotalVar = parseInt($("#load").attr("pagetotal"));
@@ -53,6 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   cid:lastCid,
                   chapterId:${chapterVo.getSeqId()},
                   pageNo:pageNoVar,
+                  refId:1
                 },
                 function(data){
                   if(data.rtn == 0){
