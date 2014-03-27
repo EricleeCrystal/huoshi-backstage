@@ -30,26 +30,26 @@ public class MobileRegisterAction extends BaseAction {
 
     @Override
     public void process() throws Exception {
-        String result = "-1";
+        String data = "-1";
         if (reject("get")) {
-            result = detail == 0 ? result : JsonUtil.toErrorRtnMsgJson("reject get request");
-            write(result);
+            data = detail == 0 ? data : "reject get request";
+            write(JsonUtil.toErrorRtnMsgJson(data));
             return;
         }
         if (EmptyUtil.isEmpty(imei)) {
-            result = detail == 0 ? result : JsonUtil.toErrorRtnMsgJson("imei is emtpy");
-            write(result);
+            data = detail == 0 ? data : "imei is emtpy";
+            write(JsonUtil.toErrorRtnMsgJson(data));
             return;
         }
         if (EmptyUtil.isEmpty(mobileNo)) {
-            result = "1";
-            result = detail == 0 ? result : JsonUtil.toErrorRtnMsgJson("mobileNo is emtpy");
-            write(result);
+            data = "1";
+            data = detail == 0 ? data : "mobileNo is emtpy";
+            write(JsonUtil.toErrorRtnMsgJson(data));
             return;
         }
         if (EmptyUtil.isEmpty(userName)) {
-            result = detail == 0 ? result : JsonUtil.toErrorRtnMsgJson("userName is emtpy");
-            write(result);
+            data = detail == 0 ? data : "userName is emtpy";
+            write(JsonUtil.toErrorRtnMsgJson(data));
             return;
         }
         userName = EmptyUtil.isEmpty(userName) ? "" : userName;
