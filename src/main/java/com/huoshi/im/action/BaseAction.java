@@ -22,6 +22,23 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
     protected HttpServletRequest request;
     protected Map<String, Object> session;
 
+    private boolean dev = true;
+
+    /**
+     * 是否拒绝特定方法访问
+     * 
+     * @param method
+     * @return
+     */
+    public boolean reject(String method) {
+        if (!dev && request.getMethod().equalsIgnoreCase(method)) {
+            return true;
+        } else {
+            // 如果是开发模式 不拒绝任何访问
+            return false;
+        }
+    }
+
     /**
      * 正常的业务处理 回写json数据
      * 

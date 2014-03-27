@@ -33,19 +33,11 @@ public class PullCommentAction extends BaseAction {
     @Setter
     private int pageSize;
 
-    private int refId;
-
     @Override
     public void process() throws Exception {
         Chapter chapter = bookService.queryChapterById(chapterId);
         Page<CommentVo> page = commentService.queryVoPageByChapter(chapter, pageNo, pageSize, cid);
         String result = JsonUtil.toRtnMsgJson(page);
-        System.out.println("refId = " + refId);
-        if (refId == 1) {// 表示后台请求
-
-        } else if (refId == 0) {// 移动app请求
-            result = "var data = " + result;
-        }
         write(result);
     }
 
