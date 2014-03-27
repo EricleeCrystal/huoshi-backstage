@@ -14,7 +14,7 @@ import com.huoshi.im.vo.CommentVo;
 
 /**
  * <pre>
- * 后台使用 添加评论
+ * 添加评论 仅供后台调用
  * @author: Ericlee
  * @date:2014-03-15 17:35:02
  */

@@ -38,77 +38,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <script type="text/javascript">
       $(function(){
-
-        function hello(){
-           $.get(
-                "pullComment",
-                {
-                  cid:0,
-                  chapterId:1,
-                  pageNo:1,
-                  refId:1
-                },
-                function(data){
-                  if(data.rtn == 0){
-                    var arr=eval(data.data.list);
-                    var htmlArr = new Array();
-                    for(var i = 0; i < arr.length; i++){
-                      var forbidHtml = "";
-                      if(arr[i].forbid == true){
-                        forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
-                      }else{
-                        forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
-                      }
-                      var html = "<div class=\"comment\" commentid=\""
-                        + arr[i].seqId
-                        + "\"><div class=\"index\"><span class=\"user\">"
-                        + arr[i].userName
-                        + "</span><span class=\"time\">"
-                        + arr[i].createTime
-                        + "</span><span class=\"floor\">"
-                        + arr[i].floorNo
-                        + "楼</span>"
-                        + forbidHtml
-                        + "</div><div class=\"content\">"
-                        + arr[i].content
-                        + "</div><div class=\"button edit\" cid=\""
-                        + arr[i].seqId
-                        + "\">修改</div></div>";
-                        htmlArr.push(html);
-                    }
-                    $(".comments").append(htmlArr.join(""));
-                    $("#load").attr("pageNo",0);
-                    $("#loadmsg").html("加载完成");
-                    $("#loadmsg").css('display','none'); 
-                  }else{
-                      $("#loadmsg").html("加载失败 请重试");
-                      $("#loadmsg").css('display','none'); 
-                  }
-                },
-                "json"
-              );
-        }
-
-
-
         // 加载更多按钮
         $("#load").click(function(event) {
-
-          hello();
-
           var lastCid = parseInt($(".comments>.comment:last-child").attr("commentid"));
-          var pageNoVar = parseInt($("#load").attr("pageno"));
           var pageTotalVar = parseInt($("#load").attr("pagetotal"));
           $("#loadmsg").css('display','block'); 
-          if(pageNoVar < pageTotalVar){
-            pageNoVar = pageNoVar + 1;
+          if(pageTotalVar > 1){
             $("#loadmsg").html("正在加载···");
             $.post(
                 "pullComment",
                 {
                   cid:lastCid,
-                  chapterId:${chapterVo.getSeqId()},
-                  pageNo:pageNoVar,
+                  bookId:${bookVo.getSeqId()},
+                  chapterNo:${chapterVo.getChapterNo()},
                   refId:1
                 },
                 function(data){
@@ -125,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                       var html = "<div class=\"comment\" commentid=\""
                         + arr[i].seqId
                         + "\"><div class=\"index\"><span class=\"user\">"
-                        + arr[i].userName
+                        + arr[i].nickName
                         + "</span><span class=\"time\">"
                         + arr[i].createTime
                         + "</span><span class=\"floor\">"
@@ -140,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         htmlArr.push(html);
                     }
                     $(".comments").append(htmlArr.join(""));
-                    $("#load").attr("pageNo",pageNoVar);
+                    $("#load").attr("pagetotal",pageTotalVar);
                     $("#loadmsg").html("加载完成");
                     $("#loadmsg").css('display','none'); 
                   }else{
@@ -290,7 +232,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
         }
         
-        $('.comment').on('click', '.edit', function(event) {
+        $('body div.edit').on('click', function(event) {
+          console.log(2);
           var cid = $(this).attr("cid");
           var content = $(this).prev().html();
           var index = $(this).prev().prev();
@@ -449,7 +392,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             %>
               <div class="comment" commentid="<%=commentVo.getSeqId()%>">
                 <div class="index">
-                  <span class="user"><%=commentVo.getUserName()%></span>
+                  <span class="user"><%=commentVo.getNickName()%></span>
                   <span class="time"><%=commentVo.getCreateTime()%></span>
                   <span class="floor" floorNo="<%=commentVo.getFloorNo()%>"><%=commentVo.getFloorNo()%> 楼</span>                  
                   <% if(commentVo.isForbid()){
@@ -471,7 +414,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div id="loadmsg">加载完成</div>
       <div class="loadbt">
         <!-- 这里不能用pageNo来完成分页 需要用最后一个id来实现动态加载 -->
-        <div id="load" class="button" pagetotal="<%=data.getPageTotal()%>" pageno="<%=data.getPageNo()%>">加载更多</div>
+        <div id="load" class="button" pagetotal="<%=data.getPageTotal()%>">加载更多</div>
       </div>
     </div>
 	</body>
