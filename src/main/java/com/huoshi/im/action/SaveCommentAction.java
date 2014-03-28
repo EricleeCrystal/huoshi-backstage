@@ -26,6 +26,8 @@ public class SaveCommentAction extends BaseAction {
     @Setter
     private String userName;
     @Setter
+    private String nickName;
+    @Setter
     private int chapterId;
     @Setter
     private String content;
@@ -43,6 +45,9 @@ public class SaveCommentAction extends BaseAction {
             write(JsonUtil.toErrorRtnMsgJson(result));
             return;
         }
+        if (EmptyUtil.isEmpty(nickName)) {
+            nickName = "";
+        }
         if (EmptyUtil.isEmpty(content)) {
             result = "commment content should not be empty";
             write(JsonUtil.toErrorRtnMsgJson(result));
@@ -53,7 +58,7 @@ public class SaveCommentAction extends BaseAction {
         User user = userService.registerifAbsent(userName);
         // 将回车空格换成字符串形式
         content = HTMLUtil.fromHtml(content);
-        CommentVo commentVo = commentService.saveComment(user, chapterId, content);
+        CommentVo commentVo = commentService.saveComment(user, chapterId, nickName, content);
         write(JsonUtil.toRtnMsgJson(commentVo));
     }
 }
