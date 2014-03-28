@@ -34,18 +34,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="static/script/ui/jquery.ui.button.js"></script>
     <script src="static/script/ui/jquery.ui.dialog.js"></script>
     <script src="static/script/ui/jquery.ui.effect.js"></script>
-    <script type="text/javascript" src="static/script/comment.js"></script>
 
     <script type="text/javascript">
       $(function(){
         // 加载更多按钮
-        $("#load").click(function(event) {
+        $("#load").click(function() {
           var lastCid = parseInt($(".comments>.comment:last-child").attr("commentid"));
           var pageTotalVar = parseInt($("#load").attr("pagetotal"));
           $("#loadmsg").css('display','block'); 
           if(pageTotalVar > 1){
             $("#loadmsg").html("正在加载···");
-            $.post(
+            $.get(
                 "pullComment",
                 {
                   cid:lastCid,
@@ -82,7 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         htmlArr.push(html);
                     }
                     $(".comments").append(htmlArr.join(""));
-                    $("#load").attr("pagetotal",pageTotalVar);
+                    $("#load").attr("pagetotal",data.data.pageTotal);
                     $("#loadmsg").html("加载完成");
                     $("#loadmsg").css('display','none'); 
                   }else{
@@ -159,6 +158,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               allSaveFields.removeClass( "ui-state-error" );
               bValid = bValid && checkSaveLength(userName, "username", 3, 30 );       
               var userNameText = $.trim($("#userName").val());
+              var nickNameText = $.trim($("#nickName").val());
               var contentText = $.trim($("#content").val());
               //验证字段合法性 如果不合法 则提示
               if ( bValid ) {
@@ -169,6 +169,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     {
                       chapterId:${chapterVo.getSeqId()},
                       userName:userNameText,
+                      nickName:nickNameText,
                       content:contentText
                     },
                     function(data){
@@ -221,6 +222,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               updateTips.removeClass( "ui-state-highlight", 1500 );
             }, 500 );
         }
+
         function checkUpdateLength( o, n, min, max ) {
           if ( o.val().trim().length > max ||  o.val().trim().length < min ) {
             o.addClass( "ui-state-error" );
@@ -232,7 +234,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
         }
         
-        $('body div.edit').on('click', function(event) {
+        $('.comments').on('click','.edit', function(event) {
           console.log(2);
           var cid = $(this).attr("cid");
           var content = $(this).prev().html();
@@ -326,8 +328,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             updateTips.val("").removeClass("ui-state-error");
           }
         });
-
-
       });
     </script>
   </head>
@@ -338,6 +338,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="input">
           <div class="desc">用户名</div>
           <input class="contentEdit" id="userName">
+        </div>
+        <div class="input">
+          <div class="desc">昵  称</div>
+          <input class="contentEdit" id="nickName">
         </div>
         <div class="input">
           <div class="desc">内  容</div>

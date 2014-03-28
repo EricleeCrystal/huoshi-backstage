@@ -38,7 +38,7 @@
 		<!-- 定义全局Result -->
 		<global-results>
 			<!-- 当返回login视图名时，转入/login.jsp页面 -->
-			<result name="login">/login.jsp</result>
+			<result name="login" type="redirect">login</result>
 		</global-results>
 
 		<action name="register" class="com.huoshi.im.action.RegisterAction">
@@ -46,7 +46,7 @@
 			<result name="error">/register.jsp</result>
 		</action>
 		<action name="login" class="com.huoshi.im.action.LoginAction">
-			<result name="success" type="redirectAction">book</result>
+			<result name="success" type="redirect">book</result>
 			<result name="error">/login.jsp</result>
 		</action>
 		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
