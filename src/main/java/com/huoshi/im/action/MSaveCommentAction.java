@@ -6,59 +6,64 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.huoshi.im.po.User;
 import com.huoshi.im.service.CommentService;
+import com.huoshi.im.service.IPService;
 import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.util.ValueUtil.HTMLUtil;
-import com.huoshi.im.vo.CommentVo;
+import com.huoshi.im.vo.ErrorCode;
 
 /**
  * <pre>
- * 添加评论 仅供后台调用
+ * 添加评论 仅供手机终端调用
  * @author: Ericlee
  * @date:2014-03-15 17:35:02
  */
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")
-public class SaveCommentAction extends BaseAction {
+public class MSaveCommentAction extends BaseAction {
 
     @Setter
-    private String userName;
+    private int userId;
     @Setter
-    private String nickName;
+    private int bookId;
     @Setter
-    private int chapterId;
+    private int chapterNo;
     @Setter
     private String content;
+    @Setter
+    private int superId;
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private IPService ipService;
     @Autowired
     private CommentService commentService;
 
     @Override
     public void process() throws Exception {
-        String result = "";
-        if (EmptyUtil.isEmpty(userName)) {
-            result = "username should not be empty";
-            write(JsonUtil.toErrorRtnMsgJson(result));
+        //只接受post请求
+        if (reject("get")) {
+            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.REJECT));
             return;
         }
-        if (EmptyUtil.isEmpty(nickName)) {
-            nickName = "";
-        }
+        // 内容为空
         if (EmptyUtil.isEmpty(content)) {
-            result = "commment content should not be empty";
-            write(JsonUtil.toErrorRtnMsgJson(result));
+            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.EMPTY));
             return;
         }
-
-        // 首先查找用户名是否已经注册 如果已经注册 使用原有的用户如果没有注册 新注册一个
-        User user = userService.registerifAbsent(userName);
+        // 找不到用户
+        User user = userService.queryByUserId(userId);
+        if (EmptyUtil.isEmpty(user)) {
+            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.USERNOTFOUND));
+            return;
+        }
         // 将回车空格换成字符串形式
         content = HTMLUtil.fromHtml(content);
-        CommentVo commentVo = commentService.saveComment(user, chapterId, nickName, content);
-        write(JsonUtil.toRtnMsgJson(commentVo));
+        String ip = request.getRemoteAddr();
+        String addr = ipService.queryAddrByIP(ip);
+        write(commentService.saveComment(user, bookId, chapterNo, ip, addr, content, superId));
     }
 }
