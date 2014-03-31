@@ -11,7 +11,7 @@ import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.util.ValueUtil.HTMLUtil;
-import com.huoshi.im.vo.ErrorCode;
+import com.huoshi.im.vo.Constants.ErrorCode;
 
 /**
  * <pre>
@@ -44,7 +44,7 @@ public class MSaveCommentAction extends BaseAction {
 
     @Override
     public void process() throws Exception {
-        //只接受post请求
+        // 只接受post请求
         if (reject("get")) {
             write(JsonUtil.toErrorRtnMsgJson(ErrorCode.REJECT));
             return;
@@ -57,7 +57,7 @@ public class MSaveCommentAction extends BaseAction {
         // 找不到用户
         User user = userService.queryByUserId(userId);
         if (EmptyUtil.isEmpty(user)) {
-            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.USERNOTFOUND));
+            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.USER_NOT_FOUND));
             return;
         }
         // 将回车空格换成字符串形式
