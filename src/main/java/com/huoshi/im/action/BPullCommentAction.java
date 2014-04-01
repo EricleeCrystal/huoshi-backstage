@@ -2,52 +2,55 @@ package com.huoshi.im.action;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.service.BookService;
 import com.huoshi.im.service.CommentService;
 
 /**
- * <pre>
- * 手机端拉取评论
- * 按照评论点赞数倒叙排序
+ * 拉取评论
+ * 
  * @author: Ericlee
- * @date:2014-03-31 23:14:27
+ * @date:2014-03-27 22:59:01
  */
 @SuppressWarnings("serial")
 @Service
-public class MPullCommentAction extends BaseAction {
+@Scope("prototype")
+public class BPullCommentAction extends BaseAction {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private BookService bookService;
 
-    /** 默认书编号 */
-    private static int defaultBookId = 1;
-    /** 默认章编号 */
-    private static int defaultChapterNo = 1;
-    /** 默认页数 */
+    private static int defaultChapterId = 1;
     private static int defaultPageNo = 1;
-    /** 默认页大小 */
     private static int defaultPageSize = 12;
 
     @Setter
-    private int bookId;
-    @Setter
-    private int chapterNo;
+    private int chapterId;
     @Setter
     private int pageNo;
+    @Setter
+    private int cid;
     @Setter
     private int pageSize;
 
     @Override
     public void process() throws Exception {
-        write(commentService.queryPageByChapter(bookId, chapterNo, pageNo, pageSize));
+        write(commentService.queryPageByChapter(chapterId, cid, pageSize));
     }
 
     @Override
     public void validate() {
-        bookId = bookId < defaultBookId ? defaultBookId : bookId;
-        chapterNo = chapterNo < defaultChapterNo ? defaultChapterNo : chapterNo;
+        chapterId = chapterId < defaultChapterId ? defaultChapterId : chapterId;
+
         pageNo = pageNo < defaultPageNo ? defaultPageNo : pageNo;
         pageSize = pageSize < defaultPageSize ? defaultPageSize : pageSize;
+        if (cid > 0) {
+            pageNo = 0;
+        }
+        cid = cid < 0 ? 0 : cid;
         super.validate();
     }
 }
