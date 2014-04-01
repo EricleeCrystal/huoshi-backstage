@@ -37,6 +37,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <script type="text/javascript">
       $(function(){
+
+        function load(seqId){
+          $.get(
+            "pullComment",
+            {
+              cid:seqId,
+              chapterId:${chapterVo.getSeqId()},
+            },
+            function(data){
+              if(data.rtn == 0){
+                var lastCid = 0;
+                var arr=eval(data.data.list);
+                var htmlArr = new Array();
+                for(var i = 0; i < arr.length; i++){
+                  lastCid = arr[i].seqId;
+                  var forbidHtml = "";
+                  if(arr[i].forbid == true){
+                    forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
+                  }else{
+                    forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
+                  }
+                  var html = "<div class=\"comment\" commentid=\""
+                    + arr[i].seqId
+                    + "\"><div class=\"index\"><span class=\"user\">"
+                    + arr[i].userName
+                    + "</span><span class=\"time\">"
+                    + arr[i].createTime
+                    + "</span><span class=\"floor\">"
+                    + arr[i].floorNo
+                    + "楼</span>"
+                    + forbidHtml
+                    + "</div><div class=\"content\">"
+                    + arr[i].content
+                    + "</div><div class=\"button edit\" cid=\""
+                    + arr[i].seqId
+                    + "\">修改</div></div>";
+                    htmlArr.push(html);
+                }
+                $(".comments").append(htmlArr.join(""));
+                //总共还剩余多少页 如果等于1 表示内容已经全部加载完了
+                $("#load").attr("pagetotal",data.data.pageTotal);
+                if(data.data.pageTotal == 1){
+                  $("#load").css('display','none');
+                }else{
+                  $("#load").attr("cid",lastCid);
+                }
+                $("#loadmsg").html("加载完成");
+                $("#loadmsg").css('display','none'); 
+              }else{
+                $("#loadmsg").html("加载失败 请重试");
+                $("#loadmsg").css('display','none'); 
+              }
+            },
+            "json"
+          );
+        }
+
+        load(0);
         // 加载更多按钮
         $("#load").click(function() {
           var lastCid = parseInt($(".comments>.comment:last-child").attr("commentid"));
@@ -44,53 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           $("#loadmsg").css('display','block'); 
           if(pageTotalVar > 1){
             $("#loadmsg").html("正在加载···");
-            $.get(
-                "pullComment",
-                {
-                  cid:lastCid,
-                  bookId:${bookVo.getSeqId()},
-                  chapterNo:${chapterVo.getChapterNo()},
-                  refId:1
-                },
-                function(data){
-                  if(data.rtn == 0){
-                    var arr=eval(data.data.list);
-                    var htmlArr = new Array();
-                    for(var i = 0; i < arr.length; i++){
-                      var forbidHtml = "";
-                      if(arr[i].forbid == true){
-                        forbidHtml = "<span class=\"forbid warn\" isforbid=\"1\">屏蔽</span>";
-                      }else{
-                        forbidHtml = "<span class=\"forbid\" isforbid=\"0\">显示</span>";
-                      }
-                      var html = "<div class=\"comment\" commentid=\""
-                        + arr[i].seqId
-                        + "\"><div class=\"index\"><span class=\"user\">"
-                        + arr[i].nickName
-                        + "</span><span class=\"time\">"
-                        + arr[i].createTime
-                        + "</span><span class=\"floor\">"
-                        + arr[i].floorNo
-                        + "楼</span>"
-                        + forbidHtml
-                        + "</div><div class=\"content\">"
-                        + arr[i].content
-                        + "</div><div class=\"button edit\" cid=\""
-                        + arr[i].seqId
-                        + "\">修改</div></div>";
-                        htmlArr.push(html);
-                    }
-                    $(".comments").append(htmlArr.join(""));
-                    $("#load").attr("pagetotal",data.data.pageTotal);
-                    $("#loadmsg").html("加载完成");
-                    $("#loadmsg").css('display','none'); 
-                  }else{
-                      $("#loadmsg").html("加载失败 请重试");
-                      $("#loadmsg").css('display','none'); 
-                  }
-                },
-                "json"
-              );
+           load(lastCid);
           }else{
             // 已经全部加载完成了
             $("#loadmsg").html("已经到最后");
@@ -328,6 +340,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             updateTips.val("").removeClass("ui-state-error");
           }
         });
+
+        //加载第一页内容
+
       });
     </script>
   </head>
@@ -387,38 +402,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
       <div id="msg" hidden="true">添加成功</div>
 
-      <%
-        Page<CommentVo> data = (Page<CommentVo>)request.getAttribute("page");
-      %>
-      <div class="comments">
-        <%
-          for(CommentVo commentVo:data.getList()){
-            %>
-              <div class="comment" commentid="<%=commentVo.getSeqId()%>">
-                <div class="index">
-                  <span class="user"><%=commentVo.getNickName()%></span>
-                  <span class="time"><%=commentVo.getCreateTime()%></span>
-                  <span class="floor" floorNo="<%=commentVo.getFloorNo()%>"><%=commentVo.getFloorNo()%> 楼</span>                  
-                  <% if(commentVo.isForbid()){
-                    %><span class="forbid warn" isforbid="1">屏蔽</span><%
-                  }else{
-                    %><span class="forbid" isforbid="0">显示</span><%
-                  }
-                  %>                  
-                </div>
-                <div class="content"><%=commentVo.getContent()%></div>
-                <div class="button edit" cid="<%=commentVo.getSeqId()%>">
-                  修改
-                </div>
-              </div>
-            <%
-          }
-        %>
-      </div>
+      <div class="comments"></div>
       <div id="loadmsg">加载完成</div>
       <div class="loadbt">
         <!-- 这里不能用pageNo来完成分页 需要用最后一个id来实现动态加载 -->
-        <div id="load" class="button" pagetotal="<%=data.getPageTotal()%>">加载更多</div>
+        <div id="load" class="button" cid="0" pagetotal="0">加载更多</div>
       </div>
     </div>
 	</body>

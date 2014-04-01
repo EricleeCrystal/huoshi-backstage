@@ -11,6 +11,12 @@ import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.vo.BookVo;
 import com.huoshi.im.vo.ChapterVo;
 
+/**
+ * 仅供后端服务器调用
+ * 
+ * @author: Ericlee
+ * @date:2014-04-01 22:23:53
+ */
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")
