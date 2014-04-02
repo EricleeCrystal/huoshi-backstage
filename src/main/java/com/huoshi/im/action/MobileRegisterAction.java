@@ -31,7 +31,7 @@ public class MobileRegisterAction extends BaseAction {
     @Override
     public void process() throws Exception {
         String data = "-1";
-        if (reject("get")) {
+        if (reject("get")) {//
             data = detail == 0 ? data : "reject get request";
             write(JsonUtil.toErrorRtnMsgJson(data));
             return;
