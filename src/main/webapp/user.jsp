@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <link rel="stylesheet" href="static/css/jquery.ui.all.css">
     <link rel="stylesheet" href="static/css/base.css">
-    <link rel="stylesheet" href="static/css/section.css">
+    <link rel="stylesheet" href="static/css/user.css">
 
     <script src="static/script/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="static/script/ui/jquery.ui.core.js"></script>
@@ -119,11 +119,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         <div id="msg" hidden="true">修改成功</div>
         
+        <%Page<UserVo> data = (Page<UserVo>)request.getAttribute("page");%>
         <div class="users">
-        
+          <div class="usertd">
+            <span>编号</span>
+            <span>userId</span>
+            <span>用户名</span>
+            <span>注册时间</span>
+            <span>最后登录时间</span>
+            <span>最后登录ip</span>
+            <span>最后登录地址</span>
+          </div>
         </div>
-        <div class="">
-        </div>
+        <%
+          for(UserVo userVo:data.getList()){
+            %>
+            <div class="user">
+                <span>编号</span>
+                <span>userId</span>
+                <span>用户名</span>
+                <span>注册时间</span>
+                <span>最后登录时间</span>
+                <span>最后登录ip</span>
+                <span>最后登录地址</span>
+            </div>
+            <%
+          }
+        %>
       </div>
   	</body>
 </html>
