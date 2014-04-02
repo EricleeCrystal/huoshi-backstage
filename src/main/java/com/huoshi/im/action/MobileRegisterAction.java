@@ -54,6 +54,6 @@ public class MobileRegisterAction extends BaseAction {
         }
         userName = EmptyUtil.isEmpty(userName) ? "" : userName;
         password = EmptyUtil.isEmpty(password) ? "" : password;
-        write(userService.register(detail, mobileNo, imei, userName, EncryptUtil.password(password)));
+        write(userService.register(detail, mobileNo, imei, userName, EncryptUtil.password(password), request.getRemoteAddr()));
     }
 }

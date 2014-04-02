@@ -49,9 +49,6 @@
 			<result name="success" type="redirect">book</result>
 			<result name="error">/login.jsp</result>
 		</action>
-		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
-			<result name="success">/wimgr.jsp</result>
-		</action>
 		<action name="book" class="com.huoshi.im.action.BookAction">
 			<result name="success">/book.jsp</result>
 		</action>
@@ -65,6 +62,15 @@
 		<action name="comment" class="com.huoshi.im.action.CommentAction">
 			<result name="error">/index.html</result>
 			<result name="success">/comment.jsp</result>
+		</action>
+		<action name="user" class="com.huoshi.im.action.UserAction">
+			<result name="error">/index.html</result>
+			<result name="success">/user.jsp</result>
+		</action>
+
+
+		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
+			<result name="success">/wimgr.jsp</result>
 		</action>
 	</package>
 
