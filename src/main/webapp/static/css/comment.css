@@ -39,6 +39,27 @@ a:hover {
     width: 100%;
     text-align: center;
 }
+/*显示当前使用哪个用户进行操作*/
+.title .user {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+}
+.title .user span{
+    width: 60px;
+}
+.title .user select{
+    margin-left: 10px;
+    width: 100px;
+}
+.title .user #userInfo span{
+    width: 30px;
+}
+.title .user #userInfo div{
+    margin-left: 5px;
+}
+
 .button {
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.1);
