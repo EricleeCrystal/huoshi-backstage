@@ -18,7 +18,6 @@ public class MPullCommentAction extends BaseAction {
 
     @Autowired
     private CommentService commentService;
-
     /** 默认书编号 */
     private static int defaultBookId = 1;
     /** 默认章编号 */
@@ -27,6 +26,8 @@ public class MPullCommentAction extends BaseAction {
     private static int defaultPageNo = 1;
     /** 默认页大小 */
     private static int defaultPageSize = 12;
+    /** 默认请求的userId */
+    private static int defaultUserId = 0;
 
     @Setter
     private int bookId;
@@ -36,10 +37,12 @@ public class MPullCommentAction extends BaseAction {
     private int pageNo;
     @Setter
     private int pageSize;
+    @Setter
+    private int userId;
 
     @Override
     public void process() throws Exception {
-        write(commentService.queryPageByChapter(bookId, chapterNo, pageNo, pageSize));
+        write(commentService.queryPageByChapter(bookId, chapterNo, pageNo, pageSize, userId));
     }
 
     @Override
@@ -48,6 +51,7 @@ public class MPullCommentAction extends BaseAction {
         chapterNo = chapterNo < defaultChapterNo ? defaultChapterNo : chapterNo;
         pageNo = pageNo < defaultPageNo ? defaultPageNo : pageNo;
         pageSize = pageSize < defaultPageSize ? defaultPageSize : pageSize;
+        userId = userId <= defaultUserId ? defaultUserId : userId;
         super.validate();
     }
 }

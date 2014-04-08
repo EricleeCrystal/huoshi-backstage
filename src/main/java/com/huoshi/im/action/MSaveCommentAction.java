@@ -8,6 +8,7 @@ import com.huoshi.im.po.User;
 import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.IPService;
 import com.huoshi.im.service.UserService;
+import com.huoshi.im.util.ClientUtil;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.util.ValueUtil.HTMLUtil;
@@ -62,8 +63,16 @@ public class MSaveCommentAction extends BaseAction {
         }
         // 将回车空格换成字符串形式
         content = HTMLUtil.fromHtml(content);
-        String ip = request.getRemoteAddr();
+
+        String ip = ClientUtil.getClientAddr(request);
         String addr = ipService.queryAddrByIP(ip);
         write(commentService.saveComment(user, bookId, chapterNo, ip, addr, content, superId));
     }
+
+    @Override
+    public void validate() {
+        superId = superId < 0 ? 0 : superId;
+        super.validate();
+    }
+
 }
