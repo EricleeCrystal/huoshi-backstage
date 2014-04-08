@@ -94,7 +94,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           );
         }
 
+        //加载第一页内容
         load(0);
+
         // 加载更多按钮
         $("#load").click(function() {
           var lastCid = parseInt($(".comments>.comment:last-child").attr("commentid"));
@@ -341,8 +343,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
         });
 
-        //加载第一页内容
+        //选中的userId
 
+        $("#userselector").change(function(event) {
+          displayUser();
+        });
+
+        //展现用户信息
+        function displayUser(){
+          var userId = $("#userselector").val();
+          var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
+          var addr = $("option[value="+userId+"]").attr("addr");
+          // $("#userInfo").html("&nbsp;&nbsp;用户Id:&nbsp;" + userId + " &nbsp;&nbsp;用户名:" + userName + " &nbsp;&nbsp;ip地址:&nbsp;"+loginAddr + "&nbsp;&nbsp;地理位置:"+addr);
+          $("#userInfo>div[class='userId']>div").html(userId);
+          $("#userInfo>div[class='ip']>div").html(loginAddr);
+          $("#userInfo>div[class='addr']>div").html(addr);
+        }
+        displayUser();
       });
     </script>
   </head>
@@ -394,6 +411,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="body">
       <div class="title">
         <div class="chapter">${bookVo.getBookName()} <br> 第${chapterVo.getChapterNo()}章</div>
+        <div class="user">
+          <span>切换用户</span>
+          <select id="userselector">
+            <%List<UserVo> userVoList = (List<UserVo>)request.getAttribute("userVoList");
+              for(UserVo userVo:userVoList){
+            %>
+              <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"><%=userVo.getUserName()%></option>
+            <%
+              }
+            %>
+          </select>
+          <div id="userInfo">
+            <div class="userId">
+              <span>Id:</span>
+              <div></div>
+            </div>
+            <div class="ip">
+              <span>IP:</span>
+              <div></div>
+            </div>
+            <div class="addr">
+              <span>addr:</span>
+              <div></div>           
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="button" id="save">
