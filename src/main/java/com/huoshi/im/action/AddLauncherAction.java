@@ -10,12 +10,15 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.util.EnvUtil;
+import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.LogUtil;
+import com.huoshi.im.util.ValueUtil.EmptyUtil;
 
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")
-public class AddWiAction extends BaseAction {
+public class AddLauncherAction extends BaseAction {
 
     private Logger logger = LogUtil.getLogger();
     @Setter
@@ -37,10 +40,17 @@ public class AddWiAction extends BaseAction {
 
     @Override
     public void process() throws Exception {
-        String root = ServletActionContext.getServletContext().getRealPath("/file");
+        String imageDir = null;
+        String root = EnvUtil.getRoot();
+        if (EmptyUtil.isNotEmpty(root)) {
+            imageDir = root + File.separator + "image";
+        } else {
+            imageDir = ServletActionContext.getServletContext().getRealPath("/image");
+        }
+
         logger.debug("root dir" + root);
         InputStream is = new FileInputStream(image);
-        File destFile = new File(root, imageFileName);
+        File destFile = new File(imageDir, imageFileName);
         OutputStream os = new FileOutputStream(destFile);
         byte[] buf = new byte[100];
         int len = 0;
@@ -49,9 +59,6 @@ public class AddWiAction extends BaseAction {
         }
         is.close();
         os.close();
-        write("上传成功");
+        write(JsonUtil.toRtnOKJson());
     }
-    
-    
-
 }

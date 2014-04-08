@@ -1,7 +1,7 @@
 package com.huoshi.im.action;
 
 @SuppressWarnings("serial")
-public class WiMgrAction extends BaseAction {
+public class LaunchAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
