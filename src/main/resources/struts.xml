@@ -68,9 +68,15 @@
 			<result name="success">/user.jsp</result>
 		</action>
 
-
-		<action name="wiMgrAction" class="com.huoshi.im.action.WiMgrAction">
-			<result name="success">/wimgr.jsp</result>
+		<!-- 启动画面配置 -->
+		<action name="launcher" class="com.huoshi.im.action.LauncherAction">
+			<result name="success">/launcher.jsp</result>
+		</action>
+		<action name="addLauncher" class="com.huoshi.im.action.AddLauncherAction">
+			<result name="success">/addLauncher.jsp</result>
+		</action>
+		<action name="saveLauncher" class="com.huoshi.im.action.SaveLauncherAction">
+			<result name="success" type="redirect">launcher</result>
 		</action>
 	</package>
 
@@ -152,8 +158,6 @@
 				<param name="contentType">text/html</param>
 			</result>
 		</action>
-
-
 	</package>
 
 </struts>

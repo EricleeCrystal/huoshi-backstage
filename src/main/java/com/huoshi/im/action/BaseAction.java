@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -71,5 +72,18 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
+    }
+
+    /**
+     * 获取当前登录后台的操作id
+     * 
+     * @return
+     */
+    public int getOpId() {
+        Integer opId = (Integer) session.get("opId");
+        if (EmptyUtil.isEmpty(opId)) {
+            return 0;
+        }
+        return opId.intValue();
     }
 }

@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.huoshi.im.vo.*"%>
-<%@ page import="com.huoshi.im.bean.*"%>
 <%@ page import="java.util.List.*"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%
