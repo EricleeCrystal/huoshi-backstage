@@ -87,7 +87,7 @@ public class SaveLauncherAction extends BaseAction {
         is.close();
         os.close();
         logger.debug("save image {} in {}", imageSaveName, imageDir);
-        launcherService.save(title, imageSaveName, href, EncryptUtil.md5(image), desc, priority, effectiveTime, expireTime, getOpId());
+        launcherService.save(title, imageSaveName, href, desc, true, true, effectiveTime, expireTime, getOpId());
         return SUCCESS;
     }
 }
