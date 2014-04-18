@@ -82,6 +82,14 @@
 
 	<package name="json" extends="struts-default">
 		<!--////////////////////////// 以下接口供后台程序调用 ////////////////////////// -->
+		<!-- app启动欢迎页 -->
+		<action name="syncLauncher" class="com.huoshi.im.action.SyncLauncherAction"
+			method="process">
+			<result type="stream">
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
 		<!-- 修改经文内容和注释 -->
 		<action name="modifySection" class="com.huoshi.im.action.ModifySectionAction"
 			method="process">
@@ -89,6 +97,9 @@
 				<param name="contentType">text/html</param>
 			</result>
 		</action>
+
+
+		<!-- 以下接口还需调试 -->
 		<!-- 拉取评论 -->
 		<action name="pullComment" class="com.huoshi.im.action.PullCommentAction"
 			method="process">
@@ -98,14 +109,6 @@
 		</action>
 		<!-- 新添加一条评论 -->
 		<action name="saveComment" class="com.huoshi.im.action.SaveCommentAction"
-			method="process">
-			<result type="stream">
-				<param name="contentType">text/html</param>
-			</result>
-		</action>
-
-		<!-- 以下接口还需调试 -->
-		<action name="addWelcomeImageAction" class="com.huoshi.im.action.AddWelcomeImageAction"
 			method="process">
 			<result type="stream">
 				<param name="contentType">text/html</param>

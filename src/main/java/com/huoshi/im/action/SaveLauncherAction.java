@@ -20,7 +20,9 @@ import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.util.ValueUtil.RandomUtil;
 
 /**
+ * <pre>
  * 保存启动画面图片
+ * 除了默认图片 其他图片不允许时间交叉
  * 
  * @author: Ericlee
  * @date:2014-04-13 17:59:59
