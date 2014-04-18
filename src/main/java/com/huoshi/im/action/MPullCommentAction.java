@@ -9,6 +9,7 @@ import com.huoshi.im.service.CommentService;
  * <pre>
  * 手机端拉取评论
  * 按照评论点赞数倒叙排序
+ * 用户如果有评论 则将该用户的最新一条评论放在首位
  * @author: Ericlee
  * @date:2014-03-31 23:14:27
  */
@@ -23,11 +24,11 @@ public class MPullCommentAction extends BaseAction {
     /** 默认章编号 */
     private static int defaultChapterNo = 1;
     /** 默认页数 */
-    private static int defaultPageNo = 1;
+    private static final int defaultPageNo = 1;
     /** 默认页大小 */
-    private static int defaultPageSize = 12;
+    private static final int defaultPageSize = 12;
     /** 默认请求的userId */
-    private static int defaultUserId = 0;
+    private static final int defaultUserId = 0;
 
     @Setter
     private int bookId;
