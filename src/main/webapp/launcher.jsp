@@ -12,11 +12,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	<base href="<%=basePath%>">
    	<title>图片管理</title>
     <meta charset="UTF-8">
-		<meta http-equiv="pragma" content="no-cache">
-		<meta http-equiv="cache-control" content="no-cache">
-		<meta http-equiv="expires" content="0">    
-		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-		<meta http-equiv="description" content="This is my page">
+		<meta http-equiv="pragma" launcherth="no-cache">
+		<meta http-equiv="cache-control" launcherth="no-cache">
+		<meta http-equiv="expires" launcherth="0">    
+		<meta http-equiv="keywords" launcherth="keyword1,keyword2,keyword3">
+		<meta http-equiv="description" launcherth="This is my page">
     <style type="text/css">
       body {
         width: 100%;
@@ -74,11 +74,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         padding: 0 8px;
         text-align: center;
       }
-      .content{
+      .launcherth{
         width: 100%;
         float: left;
       }
-      .content *{
+      .launcherth *{
         position: relative;
         float: left;
       }
@@ -110,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-left: 10px;
         width: 50px;
       }
-      .content .title{
+      .launcherth .title{
         width: 100px;
       }
       .desc{
@@ -150,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="title">
           <a href="./addLauncher" class="button">添加</a>
         </div>
-        <div class="content">
+        <div class="launcherth">
           <div class="header">
             <div class="seqId">编号</div>
             <div class="title">标题</div>

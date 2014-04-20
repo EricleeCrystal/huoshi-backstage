@@ -48,11 +48,11 @@ public class MPullCommentAction extends BaseAction {
 
     @Override
     public void validate() {
-        bookId = bookId < defaultBookId ? defaultBookId : bookId;
-        chapterNo = chapterNo < defaultChapterNo ? defaultChapterNo : chapterNo;
-        pageNo = pageNo < defaultPageNo ? defaultPageNo : pageNo;
-        pageSize = pageSize < defaultPageSize ? defaultPageSize : pageSize;
-        userId = userId <= defaultUserId ? defaultUserId : userId;
+        bookId = bookId <= 0 ? defaultBookId : bookId;
+        chapterNo = chapterNo <= 0 ? defaultChapterNo : chapterNo;
+        pageNo = pageNo <= 0 ? defaultPageNo : pageNo;
+        pageSize = pageSize <= 0 ? defaultPageSize : pageSize;
+        userId = userId <= 0 ? defaultUserId : userId;
         super.validate();
     }
 }

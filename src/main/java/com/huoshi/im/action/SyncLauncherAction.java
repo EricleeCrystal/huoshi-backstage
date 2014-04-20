@@ -10,6 +10,12 @@ import com.huoshi.im.util.EnvUtil;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 
+/**
+ * 同步产生app需要的启动加载图片
+ * 
+ * @author: Ericlee
+ * @date:2014-04-20 13:42:45
+ */
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")

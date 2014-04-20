@@ -26,11 +26,8 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.huoshi.im</groupId>
-			<artifactId>huoshi-core</artifactId>
-			<version>1.0</version>
-		</dependency>
+	<!-- <dependency> <groupId>com.huoshi.im</groupId> <artifactId>huoshi-core</artifactId> 
+		<version>1.0</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
