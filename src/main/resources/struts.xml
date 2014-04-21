@@ -63,9 +63,14 @@
 			<result name="error">/index.html</result>
 			<result name="success">/comment.jsp</result>
 		</action>
+
+		<!-- 用户 -->
 		<action name="user" class="com.huoshi.im.action.UserAction">
 			<result name="error">/index.html</result>
 			<result name="success">/user.jsp</result>
+		</action>
+		<action name="modifyUser" class="com.huoshi.im.action.ModifyUserAction">
+			<result name="success">/modifyUser.jsp</result>
 		</action>
 
 		<!-- 启动画面配置 -->

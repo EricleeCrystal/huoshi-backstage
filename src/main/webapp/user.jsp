@@ -43,13 +43,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       .body {
         font-family: arial, sans-serif;
         width: 80%;
-        min-width: 800px;
+        min-width: 1100px;
         position: relative;
         height: 100%;
         margin-left: 10%;
         text-align: center;
       }
-
       .users *{
         position: relative;
         float: left;
@@ -172,7 +171,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <td class="loginip"><%=userVo.getLoginAddr()%></td>
                 <td class="loginAddr"><%=userVo.getAddr()%></td>
                 <td class="edit">
-                  <a class="button" href="./">修改</a>
+                  <a class="button" href="./modifyUser?userId=<%=userVo.getUserId()%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
                 </td>
               </tr>
               <%
