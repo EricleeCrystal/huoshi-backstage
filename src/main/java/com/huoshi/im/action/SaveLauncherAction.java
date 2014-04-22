@@ -32,9 +32,21 @@ import com.huoshi.im.util.ValueUtil.RandomUtil;
 @Scope("prototype")
 public class SaveLauncherAction extends BaseAction {
 
+    @Autowired
+    private LauncherService launcherService;
     private Logger logger = LogUtil.getLogger();
+
+    private int mode;
     @Setter
     private String title;
+    /** 上传的文件名称 */
+    @Setter
+    private String source;
+    @Setter
+    private String revealDate;
+    @Setter
+    private int exceed;
+
     /** 上传的文件 */
     @Setter
     private File image;
@@ -43,19 +55,6 @@ public class SaveLauncherAction extends BaseAction {
     /** 请求的图片格式 */
     @Setter
     private String imageContentType;
-    @Setter
-    private String href;
-    /** 上传的文件名称 */
-    @Setter
-    private String desc;
-    @Setter
-    private int priority;
-    @Setter
-    private String effectiveTime;
-    @Setter
-    private String expireTime;
-    @Autowired
-    private LauncherService launcherService;
 
     @Override
     public String execute() throws Exception {
@@ -89,7 +88,7 @@ public class SaveLauncherAction extends BaseAction {
         is.close();
         os.close();
         logger.debug("save image {} in {}", imageSaveName, imageDir);
-        launcherService.save(title, imageSaveName, href, desc, true, true, effectiveTime, expireTime, getOpId());
+        launcherService.save(mode, title, source, imageSaveName, revealDate, exceed > 0 ? true : false, true, getOpId());
         return SUCCESS;
     }
 }

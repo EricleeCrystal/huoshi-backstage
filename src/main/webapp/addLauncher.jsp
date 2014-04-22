@@ -17,13 +17,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<body>
   		<form action="saveLauncher" method="post" enctype="multipart/form-data">
-    			标题:<input type="text" name="title"><br>
-    			图片:<input type="file" name="image"><br>
-          链接:<input type="text" name="href"><br>
-    			描述:<input type="text" name="desc"><br>
-    			优先级:<input type="text" name="priority"><br>
-    			生效时间<input type="text" name="effectiveTime"><br>
-    			失效时间<input type="text" name="expireTime"><br>
+          <div><span>模式</span><input type="text" name="mode"></div>
+          <div><span>标题</span><input type="text" name="title"></div>
+          <div><span>来源</span><input type="text" name="source"></div>
+          <div><span>展示日期</span><input type="text" name="revealDate"></div>
+          <div><span>延期显示</span><input type="text" name="exceed"></div>
+          <div><span>图片</span><input type="file" name="image"><br></div>
     			<input type="submit" value="submit"><br>
   		</form>
   	</body>

@@ -61,6 +61,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         font-size: 14pt;
         height: auto;
       }
+      .title a{
+        position: relative;
+        float: left;
+        margin-left: 30px;
+      }
+      .title .all{
+        margin-left: 70%;
+      }
       tr{
         border-bottom: solid 1px;
         margin-bottom: 5px;
@@ -88,7 +96,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         width: 200px;
       }
       .edit{
+        margin-top: -4px;
         width: 100px;
+      }
+      .edit a{
+        height: 27px;
       }
 
       .page{
@@ -129,22 +141,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         padding: 0 8px;
         text-align: center;
       }
-      .page .pageNo{
-
-      }
-
     </style>
-
-
-
-    <script type="text/javascript">
-      $(function(){
-      });
-    </script>
   	</head>
   	<body>
       <div class="body">
         <div class="title">账号管理</div>
+        <div class="title">
+          <%
+            int sort = ((Integer)request.getAttribute("sort")).intValue();
+            if(sort == 1){
+            %>
+              <a class="all" href="./user?sort=0&pageNo=1&pageSize=12">全部</a>
+              <a class="selected" href="./user?sort=1&pageNo=1&pageSize=12">内部账号</a>
+              <a href="./user?sort=2&pageNo=1&pageSize=12">外部账号</a>
+            <%
+            }else if(sort == 2){
+            %>
+              <a class="all" href="./user?sort=0&pageNo=1&pageSize=12">全部</a>
+              <a class="selected" href="./user?sort=1&pageNo=1&pageSize=12">内部账号</a>
+              <a href="./user?sort=2&pageNo=1&pageSize=12">外部账号</a>
+            <%
+            }else{
+            %>
+              <a class="all" class="selected">全部</a>
+              <a class="selected" href="./user?sort=1&pageNo=1&pageSize=12">内部账号</a>
+              <a href="./user?sort=2&pageNo=1&pageSize=12">外部账号</a>
+            <%
+            }
+          %>
+
+        </div>
 
         <table class="users">
           <tr class="th">
@@ -171,7 +197,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <td class="loginip"><%=userVo.getLoginAddr()%></td>
                 <td class="loginAddr"><%=userVo.getAddr()%></td>
                 <td class="edit">
-                  <a class="button" href="./modifyUser?userId=<%=userVo.getUserId()%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
+                <%
+                  if(userVo.getImei().length()==0){
+                %>                 
+                    <a class="button" href="./editUser?userId=<%=userVo.getUserId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
+                <%
+                  }
+                %>
                 </td>
               </tr>
               <%
@@ -184,7 +216,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <%
           int pageTotal = data.getPageTotal();
           int pageNo = data.getPageNo();
-          String href = "./user?pageSize=" + data.getPageSize() + "&pageNo=";
+          String href = "./user?sort=" + sort + "&pageSize=" + data.getPageSize() + "&pageNo=";
           if(pageNo > 1){
           %>
             <a class="pageBtn" href="<%=href%>1">第一页<a>

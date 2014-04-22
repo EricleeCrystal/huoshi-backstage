@@ -26,7 +26,9 @@ public class UserAction extends BaseAction {
     private int pageNo;
     @Setter
     private int pageSize;
-
+    @Getter
+    @Setter
+    private int sort;
     @Getter
     private Page<UserVo> page;
 
@@ -35,7 +37,19 @@ public class UserAction extends BaseAction {
      */
     @Override
     public String execute() throws Exception {
-        page = userService.queryUserByPage(pageNo, pageSize);
+        switch (sort) {
+        case 0:// 全部账号
+            page = userService.queryUserByPage(pageNo, pageSize);
+            break;
+        case 1:// 内部账号
+            page = userService.queryInnerUserByPage(pageNo, pageSize);
+            break;
+        case 2:// 外部账号
+            page = userService.queryOutterUserByPage(pageNo, pageSize);
+            break;
+        default:
+            break;
+        }
         return SUCCESS;
     }
 
@@ -46,6 +60,9 @@ public class UserAction extends BaseAction {
         }
         if (pageSize <= 0) {
             pageSize = defaultPageSize;
+        }
+        if (sort < 0 || sort > 2) {
+            sort = 0;
         }
         super.validate();
     }

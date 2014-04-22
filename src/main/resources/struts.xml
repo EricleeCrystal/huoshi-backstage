@@ -69,8 +69,23 @@
 			<result name="error">/index.html</result>
 			<result name="success">/user.jsp</result>
 		</action>
+
+		<action name="editUser" class="com.huoshi.im.action.EditUserAction">
+			<result name="error" type="redirectAction">
+				<param name="actionName">user</param>
+				<param name="sort">${sort}</param>
+				<param name="pageNo">${pageNo}</param>
+				<param name="pageSize">${pageSize}</param>
+			</result>
+			<result name="success">/editUser.jsp</result>
+		</action>
 		<action name="modifyUser" class="com.huoshi.im.action.ModifyUserAction">
-			<result name="success">/modifyUser.jsp</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">user</param>
+				<param name="sort">${sort}</param>
+				<param name="pageNo">${pageNo}</param>
+				<param name="pageSize">${pageSize}</param>
+			</result>
 		</action>
 
 		<!-- 启动画面配置 -->
