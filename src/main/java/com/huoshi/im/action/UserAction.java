@@ -37,30 +37,14 @@ public class UserAction extends BaseAction {
      */
     @Override
     public String execute() throws Exception {
-        switch (sort) {
-        case 0:// 全部账号
-            page = userService.queryUserByPage(pageNo, pageSize);
-            break;
-        case 1:// 内部账号
-            page = userService.queryInnerUserByPage(pageNo, pageSize);
-            break;
-        case 2:// 外部账号
-            page = userService.queryOutterUserByPage(pageNo, pageSize);
-            break;
-        default:
-            break;
-        }
+        page = userService.queryUserByPage(pageNo, pageSize, sort);
         return SUCCESS;
     }
 
     @Override
     public void validate() {
-        if (pageNo <= 0) {
-            pageNo = defaultPageNo;
-        }
-        if (pageSize <= 0) {
-            pageSize = defaultPageSize;
-        }
+        pageNo = pageNo <= 0 ? defaultPageNo : pageNo;
+        pageSize = pageSize <= 0 ? defaultPageSize : pageSize;
         if (sort < 0 || sort > 2) {
             sort = 0;
         }

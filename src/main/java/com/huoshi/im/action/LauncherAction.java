@@ -35,8 +35,9 @@ public class LauncherAction extends BaseAction {
 
     @Override
     public void validate() {
-        sort = sort < 0 ? 0 : sort;
-        sort = sort > 2 ? 0 : sort;
+        if (sort < 0 || sort > 2) {
+            sort = 0;
+        }
         pageSize = pageSize <= 0 ? 12 : pageSize;
         pageNo = pageNo <= 0 ? 1 : pageNo;
         super.validate();

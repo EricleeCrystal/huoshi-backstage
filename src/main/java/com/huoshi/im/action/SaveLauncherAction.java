@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.huoshi.im.service.LauncherService;
 import com.huoshi.im.util.DateUtil;
-import com.huoshi.im.util.EncryptUtil;
 import com.huoshi.im.util.EnvUtil;
 import com.huoshi.im.util.LogUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
@@ -36,10 +35,10 @@ public class SaveLauncherAction extends BaseAction {
     private LauncherService launcherService;
     private Logger logger = LogUtil.getLogger();
 
+    @Setter
     private int mode;
     @Setter
     private String title;
-    /** 上传的文件名称 */
     @Setter
     private String source;
     @Setter
@@ -50,6 +49,7 @@ public class SaveLauncherAction extends BaseAction {
     /** 上传的文件 */
     @Setter
     private File image;
+    /** 上传的文件名称 */
     @Setter
     private String imageFileName;
     /** 请求的图片格式 */
@@ -65,11 +65,11 @@ public class SaveLauncherAction extends BaseAction {
         } else {
             imageDir = ServletActionContext.getServletContext().getRealPath("/file/image");
         }
-
+        logger.error("save here");
         /** 生成一个唯一的文件名称 (opId 时间 2位随机数) */
         StringBuilder sb = new StringBuilder();
-        sb.append(getOpId()).append(DateUtil.DATETIME.now()).append(RandomUtil.random(2));
-        String imageSaveName = EncryptUtil.md5(sb.toString());
+        sb.append(DateUtil.DATETIMESTR.now()).append(getOpId()).append(RandomUtil.random(2));
+        String imageSaveName = sb.toString();
         String suffix = ".jpg";
         int suffixIndex = imageFileName.lastIndexOf(".");
         if (suffixIndex > 0) {

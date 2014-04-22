@@ -15,7 +15,7 @@
 	<constant name="struts.configuration.xml.reload" value="false" />
 
 	<!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
-	<constant name="struts.devMode" value="false" />
+	<constant name="struts.devMode" value="true" />
 
 	<package name="struts" extends="struts-default">
 
@@ -97,6 +97,7 @@
 		</action>
 		<action name="saveLauncher" class="com.huoshi.im.action.SaveLauncherAction">
 			<result name="success" type="redirect">launcher</result>
+			<result name="input" type="redirect">/index.html</result>
 		</action>
 	</package>
 

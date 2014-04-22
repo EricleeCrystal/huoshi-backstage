@@ -51,8 +51,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       form{
         position: relative;
         float: left;
-        width: 500px;
-        margin-left: 40%;
+        min-width: 500px;
+        width: 40%;
+        margin-left: 35%;
         text-align: center;
       }
       form *{
@@ -60,6 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       }
       form div{
         width: 100%;
+        margin-top: 5px;
       }
       form div span{
         width: 150px;
@@ -86,7 +88,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <input name="pageSize" value="<%=pageSize%>" readOnly="true" input type="hidden">
           <input name="seqId" value="<%=userVo.getSeqId()%>" readOnly="true" input type="hidden">
 
-          <div class="seqId"><span>编&nbsp;&nbsp;&nbsp;号</span></div>
           <div class="userId"><span>userId</span><input name="userId" value="<%=userVo.getUserId()%>" readOnly="true"></div>
           <div class="userName"><span>用户名</span><input name="userName" value="<%=userVo.getUserName()%>"></div>
           <div class="regTime"><span>注册时间</span><input name="regTime" value="<%=userVo.getRegisterTime()%>"></div>
