@@ -60,7 +60,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       form div span{
         width: 150px;
       }
+      select, input{
+        width: 180px;
+      }
       .save{
+        width: 80px;
         margin-top: 30px;
         margin-left: 150px;
       }
@@ -71,7 +75,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="body">
       <div class="title">启动页添加</div>
   		<form action="saveLauncher" method="post" enctype="multipart/form-data">
-          <div><span>模式</span><input type="text" name="mode"></div>
+          <div><span>模式</span>
+            <select name="mode">
+              <option value="1">图片模式</option>
+              <option value="2">文字模式</option>
+              <option value="3">图文组合模式</option>
+            </select>
+          </div>
           <div><span>标题</span><input type="text" name="title"></div>
           <div><span>来源</span><input type="text" name="source"></div>
           <div><span>展示日期</span><input type="text" name="revealDate"></div>
