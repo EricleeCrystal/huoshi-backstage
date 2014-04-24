@@ -16,6 +16,7 @@ public class LauncherAction extends BaseAction {
 
     /** 0 全部 1 失效的 2 有效的 */
     @Setter
+    @Getter
     private int sort;
     @Setter
     private int pageSize;
@@ -30,7 +31,7 @@ public class LauncherAction extends BaseAction {
     @Override
     public String execute() throws Exception {
         page = launcherService.queryByPage(pageNo, pageSize, sort);
-        return super.execute();
+        return SUCCESS;
     }
 
     @Override

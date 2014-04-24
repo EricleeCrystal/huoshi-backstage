@@ -2,6 +2,7 @@ package com.huoshi.im.action;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.huoshi.im.po.User;
 import com.huoshi.im.service.CommentService;
@@ -19,6 +20,7 @@ import com.huoshi.im.vo.Constants.Vote;
  */
 @SuppressWarnings("serial")
 @Service
+@Scope("prototype")
 public class MVoteCommentAction extends BaseAction {
 
     @Setter

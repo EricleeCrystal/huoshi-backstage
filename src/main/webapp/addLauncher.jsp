@@ -58,10 +58,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-top: 5px;
       }
       form div span{
+        margin-top: 5px;
+        margin-bottom: 5px;
         width: 150px;
       }
       select, input{
         width: 180px;
+      }
+      .exceed{
+        width:180px;
+      }
+      .exceed *{
+        float: left;
+        position: relative;
+      }
+      .exceed tt{
+        margin-left: 10px;
+      }
+      .exceed input{
+        width: 20px;
       }
       .save{
         width: 80px;
@@ -75,19 +90,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="body">
       <div class="title">启动页添加</div>
   		<form action="saveLauncher" method="post" enctype="multipart/form-data">
-          <div><span>模式</span>
+          <div><span>模&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;式</span>
             <select name="mode">
               <option value="1">图片模式</option>
               <option value="2">文字模式</option>
               <option value="3">图文组合模式</option>
             </select>
           </div>
-          <div><span>标题</span><input type="text" name="title"></div>
-          <div><span>来源</span><input type="text" name="source"></div>
-          <div><span>展示日期</span><input type="text" name="revealDate"></div>
-          <div><span>延期显示</span><input type="text" name="exceed"></div>
-          <div><span>图片</span><input type="file" name="image"></div>
-    			<div><input class="save" type="submit" value="保存"></div>
+          <div>
+            <span>标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题</span>
+            <input type="text" name="title"/>
+          </div>
+          <div>
+            <span>来&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;源</span>
+            <input type="text" name="source"/>
+          </div>
+          <div>
+            <span>展&nbsp;&nbsp;&nbsp;&nbsp;示&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期</span>
+            <input type="text" name="revealDate"/>
+          </div>
+          <div>
+            <span>延&nbsp;&nbsp;&nbsp;&nbsp;期&nbsp;&nbsp;&nbsp;&nbsp;显&nbsp;&nbsp;&nbsp;&nbsp;示</span>
+              <div  class="exceed">
+                <tt>是</tt><input type="radio" name="exceed" value="1" checked="true"/>
+                <tt>否</tt><input type="radio" name="exceed" value="0"/>
+              </div>
+          </div>
+          <div>
+            <span>图&nbsp;片&nbsp;1280X720</span>
+            <input type="file" name="image"/>
+          </div>
+    			<div>
+            <input class="save" type="submit" value="保存"/>
+          </div>
   		</form>
     </div>
   </body>

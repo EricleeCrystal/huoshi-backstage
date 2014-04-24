@@ -1,4 +1,3 @@
-
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="com.huoshi.im.vo.*"%>
 <%@ page import="java.util.List.*"%>
@@ -9,14 +8,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-   	<base href="<%=basePath%>">
-   	<title>图片管理</title>
+    <base href="<%=basePath%>">
+    <title>图片管理</title>
     <meta charset="UTF-8">
-		<meta http-equiv="pragma" launcherth="no-cache">
-		<meta http-equiv="cache-control" launcherth="no-cache">
-		<meta http-equiv="expires" launcherth="0">    
-		<meta http-equiv="keywords" launcherth="keyword1,keyword2,keyword3">
-		<meta http-equiv="description" launcherth="This is my page">
+    <meta http-equiv="pragma" launcherth="no-cache">
+    <meta http-equiv="cache-control" launcherth="no-cache">
+    <meta http-equiv="expires" launcherth="0">    
+    <meta http-equiv="keywords" launcherth="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" launcherth="This is my page">
     
     <link rel="stylesheet" href="static/css/base.css">
     <script src="static/script/jquery-2.1.0.min.js" type="text/javascript"></script>
@@ -80,10 +79,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       .seqId{
         width: 50px;
       }
-      .launcherId{
+      .mode{
         width: 100px;
       }
-      .launcherName{
+      .launcerTitle{
         width: 100px;
       }
       .regTime, .loginTime{
@@ -143,9 +142,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       }
     </style>
 
-	</head>
-	
-	<body>
+  </head>
+  
+  <body>
     <div class="body">
         <div class="title">启动图片管理</div>
         <div class="title">
@@ -178,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <tr class="th">
             <th class="seqId">编号</th>
             <th class="mode">模式</th>
-            <th class="title">文字内容</th>
+            <th class="launcerTitle">文字内容</th>
             <th class="source">来源</th>
             <th class="image">图片</th>
             <th class="revealDate">展示日期</th>
@@ -190,35 +189,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </tr>
           
           <%
-          Page<launcherVo> data = (Page<launcherVo>)request.getAttribute("page");
-            for(launcherVo launcherVo:data.getList()){
+          Page<LauncherVo> data = (Page<LauncherVo>)request.getAttribute("page");
+            for(LauncherVo launcherVo:data.getList()){
               %>
               <tr class="td">
                 <td class="seqId"><%=launcherVo.getSeqId()%></td>
-                <td class="mode"><%=launcherVo.getlauncherId()%></td>
-                <td class="title"><%=launcherVo.getlauncherName()%></td>
-                <td class="source"><%=launcherVo.getRegisterTime()%></td>
-                <td class="image"><%=launcherVo.getLoginTime()%></td>
-                <td class="revealDate"><%=launcherVo.getLoginAddr()%></td>
-                <td class="exceed"><%=launcherVo.getAddr()%></td>
-                <td class="valid"><%=launcherVo.getAddr()%></td>
-                <td class="operaterName"><%=launcherVo.getAddr()%></td>
-                <td class="createTime"><%=launcherVo.getAddr()%></td>
+                <td class="mode"><%=launcherVo.getMode()%></td>
+                <td class="launcerTitle"><%=launcherVo.getTitle()%></td>
+                <td class="source"><%=launcherVo.getSource()%></td>
+                <td class="image"><%=launcherVo.getImage()%></td>
+                <td class="revealDate"><%=launcherVo.getRevealDate()%></td>
+                <td class="exceed"><%=launcherVo.isExceed()%></td>
+                <td class="valid"><%=launcherVo.isValid()%></td>
+                <td class="operaterName"><%=launcherVo.getOpName()%></td>
+                <td class="createTime"><%=launcherVo.getCreateTime()%></td>
                 <td class="edit">
-                <%
-                  if(launcherVo.getImei().length()==0){
-                %> 
-                    <a class="button" href="./editlauncher?launcherId=<%=launcherVo.getlauncherId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
-                <%
-                  }
-                %>
+                  <a class="button" href="./editlauncher?launcherId=<%=launcherVo.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
                 </td>
               </tr>
               <%
             }
           %>
         </table>
-
         <!--分页-->
         <div class="page">
           <%
@@ -292,6 +284,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
           %>
         </div>
+
       </div>
   </body>
 </html>
