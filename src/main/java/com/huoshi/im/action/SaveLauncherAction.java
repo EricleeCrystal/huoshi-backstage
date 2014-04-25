@@ -58,6 +58,9 @@ public class SaveLauncherAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        if (reject(GET)) {
+            return INPUT;
+        }
         String imageDir = null;
         String root = EnvUtil.getRoot();
         if (EmptyUtil.isNotEmpty(root)) {

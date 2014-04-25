@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import com.huoshi.im.util.EnvUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -23,7 +24,7 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
     protected HttpServletRequest request;
     protected Map<String, Object> session;
 
-    private boolean dev = true;
+    protected String GET = "GET";
 
     /**
      * 是否拒绝特定方法访问
@@ -32,7 +33,7 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
      * @return
      */
     public boolean reject(String method) {
-        if (!dev && request.getMethod().equalsIgnoreCase(method)) {
+        if (!EnvUtil.isDev() && request.getMethod().equalsIgnoreCase(method)) {
             return true;
         } else {
             // 如果是开发模式 不拒绝任何访问

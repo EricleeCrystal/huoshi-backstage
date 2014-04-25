@@ -3,7 +3,6 @@ package com.huoshi.im.action;
 import java.io.File;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.huoshi.im.service.LauncherService;
 import com.huoshi.im.util.EnvUtil;
@@ -18,10 +17,7 @@ import com.huoshi.im.util.ValueUtil.EmptyUtil;
  */
 @SuppressWarnings("serial")
 @Service
-@Scope("prototype")
 public class SyncLauncherAction extends BaseAction {
-
-    // private static final String destPathname = "/";
 
     @Autowired
     private LauncherService launcherService;
