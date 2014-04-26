@@ -45,8 +45,12 @@ public class MobileRegisterAction extends BaseAction {
             write(JsonUtil.toErrorRtnMsgJson(ErrorCode.EMPTY_USERNAME));
             return;
         }
+        String remoteAddr = request.getHeader("X-Real-IP");
+        if (EmptyUtil.isEmpty(remoteAddr)) {
+            remoteAddr = request.getRemoteAddr();
+        }
         userName = EmptyUtil.isEmpty(userName) ? "" : userName;
         password = EmptyUtil.isEmpty(password) ? "" : password;
-        write(userService.register(0, mobileNo, imei, userName, EncryptUtil.password(password), request.getRemoteAddr()));
+        write(userService.register(0, mobileNo, imei, userName, EncryptUtil.password(password), remoteAddr));
     }
 }
