@@ -9,29 +9,30 @@
 	<!-- <constant name="struts.action.extension" value="do" /> -->
 
 	<!-- 设置浏览器是否缓存静态内容,默认值为true(生产环境下使用),开发阶段最好关闭 -->
-	<constant name="struts.serve.static.browserCache" value="false" />
-
+	<constant name="struts.serve.static.browserCache" value="true" />
 	<!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
 	<constant name="struts.configuration.xml.reload" value="false" />
-
 	<!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 
 	<package name="struts" extends="struts-default">
 
-		<!-- 定义一个拦截器 -->
+		<!-- 定义一个拦截器 拦截器栈 -->
 		<interceptors>
-			<interceptor name="huoshiOpLoginInteceptor"
+			<interceptor name="accessInterceptor"
+				class="com.huoshi.im.interceptor.AccessInterceptor" />
+			<interceptor name="opLoginInteceptor"
 				class="com.huoshi.im.interceptor.LoginInterceptor" />
 			<interceptor name="InterceptorLogin"
 				class="com.struts.interceptor.InterceptorLogin" />
 
-			<!-- 拦截器栈 -->
 			<interceptor-stack name="huoshiDefaultStack">
 				<interceptor-ref name="defaultStack" />
-				<interceptor-ref name="huoshiOpLoginInteceptor" />
+				<interceptor-ref name="accessInterceptor" />
+				<interceptor-ref name="opLoginInteceptor" />
 			</interceptor-stack>
 		</interceptors>
+
 		<!-- 默认的拦截器引用 应用到所有的action -->
 		<default-interceptor-ref name="huoshiDefaultStack"></default-interceptor-ref>
 
@@ -102,6 +103,21 @@
 	</package>
 
 	<package name="json" extends="struts-default">
+
+		<!-- 定义一个拦截器 -->
+		<interceptors>
+			<interceptor name="accessInterceptor"
+				class="com.huoshi.im.interceptor.AccessInterceptor" />
+
+			<!-- 拦截器栈 -->
+			<interceptor-stack name="jsonDefaultStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="accessInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认的拦截器引用 应用到所有的action -->
+		<default-interceptor-ref name="jsonDefaultStack" />
+
 		<!--////////////////////////// 以下接口供后台程序调用 ////////////////////////// -->
 		<!-- app启动欢迎页 -->
 		<action name="syncLauncher" class="com.huoshi.im.action.SyncLauncherAction"

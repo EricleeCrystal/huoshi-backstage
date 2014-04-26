@@ -45,6 +45,8 @@ public class SaveLauncherAction extends BaseAction {
     private String revealDate;
     @Setter
     private int exceed;
+    @Setter
+    private String bgcolor;
 
     /** 上传的文件 */
     @Setter
@@ -91,7 +93,7 @@ public class SaveLauncherAction extends BaseAction {
         is.close();
         os.close();
         logger.debug("save image {} in {}", imageSaveName, imageDir);
-        launcherService.save(mode, title, source, imageSaveName, revealDate, exceed > 0 ? true : false, true, getOpId());
+        launcherService.save(mode, title, source, imageSaveName, bgcolor, revealDate, exceed > 0 ? true : false, true, getOpId());
         return SUCCESS;
     }
 }
