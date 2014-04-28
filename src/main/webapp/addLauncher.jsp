@@ -5,14 +5,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  	<head>
-    	<base href="<%=basePath%>">
-    	<title>启动图片管理</title>
-		<meta http-equiv="pragma" content="no-cache">
-		<meta http-equiv="cache-control" content="no-cache">
-		<meta http-equiv="expires" content="0">    
-		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-		<meta http-equiv="description" content="This is my page">
+    <head>
+      <base href="<%=basePath%>">
+      <title>启动图片管理</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">    
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
     <link rel="stylesheet" href="static/css/base.css">
     <script src="static/script/jquery-2.1.0.min.js" type="text/javascript"></script>
     <style type="text/css">
@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
         min-width: 500px;
         width: 40%;
-        margin-left: 35%;
+        margin-left: 5%;
         text-align: center;
       }
       form *{
@@ -83,51 +83,93 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-top: 30px;
         margin-left: 150px;
       }
-      .preview{
-        border: solid 1px;
-        width: 360;
-        height: 640;
+      #preview{
+        border:1px solid #000;
+        overflow:hidden;
+        width: 400px;
+        height: 400px;
       }
-      .image{
-        height: 100%;
+      #imgArea{
+        display: none;
       }
     </style>
 
     <script type="text/javascript">
       $(function(){
-        function getFullPath(obj) {    //得到图片的完整路径  
-            if (obj) {  
-                //ie  
-                if (window.navigator.userAgent.indexOf("MSIE") >= 1) {  
-                    obj.select();  
-                    return document.selection.createRange().text;  
-                }  
-                //firefox  
-                else if (window.navigator.userAgent.indexOf("Firefox") >= 1) {  
-                    if (obj.files) {  
-                        return obj.files.item(0).getAsDataURL();  
-                    }  
-                    return obj.value;  
-                }  
-                return obj.value;  
-            }  
-        } 
+        function previewImage(file){
+          var MAXWIDTH  = 400;
+          var MAXHEIGHT = 400;
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0]){
+            div.innerHTML = "<img id='imgArea'>";
+            var img = document.getElementById('imgArea');
+            img.onload = function(){
+              var rect = reSize(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+              img.width = rect.width;
+              img.height = rect.height;
+              img.style.marginLeft = rect.left+'px';
+              img.style.marginTop = rect.top+'px';
+              if(img.width == MAXWIDTH){
+                $("#imgArea").css("border-left",'solid 2px red');
+              }else{
+                $("#imgArea").css("border-top",'solid 2px red');
+              }
+            }
+            var reader = new FileReader();
+            reader.onload = function(evt){
+              img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+            img.style.display= "block";
+          }else{
+            var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = "<img id='imgArea'>";
+            var img = document.getElementById('imgArea');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = reSize(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+            div.innerHTML = "<div id='imgArea' style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;margin-left:"+rect.left+"px;"+sFilter+src+"\"'></div>";
+          }
+        }
+        
+        function reSize(maxWidth, maxHeight, width, height){
+          var param = {top:0, left:0, width:width, height:height};
+          if( width > maxWidth || height > maxHeight ){
+              rateWidth = width / maxWidth;
+              rateHeight = height / maxHeight;
+              if( rateWidth > rateHeight ) {
+                param.width =  maxWidth;
+                param.height = Math.round(height / rateWidth);
+              }else {
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;                
+              }
+          }
+          param.left = Math.round((maxWidth - param.width) / 2);  
+          param.top = Math.round((maxHeight - param.height) / 2);  
+          return param;  
+        }
 
-        $("#uploadImage").change(function(){
-          var path = $(this).val();
-          img = new Image();
-
-          $("#preImage").attr("src", getFullPath(this));
+        $("#uploadImage").change(function(event) {
+          previewImage(this);
         });
-      });
+        $("#bgcolor").on('input',function(event){
+          var bgcolor = $(this).val();
+          // $("#preview").attr("bgColor",''+bgcolor+'');
+          $("#preview").css("background-color",'#'+bgcolor+'');
+        });
+
+      });     
     </script>
 
-	</head>
+  </head>
 
-	<body>
+  <body>
     <div class="body">
       <div class="title">启动页添加</div>
-  		<form action="saveLauncher" method="post" enctype="multipart/form-data">
+      <form action="saveLauncher" method="post" enctype="multipart/form-data">
           <div><span>模&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;式</span>
             <select name="mode">
               <option value="1">图片模式</option>
@@ -144,8 +186,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <input type="text" name="source"/>
           </div>
           <div>
-            <span>背&nbsp;&nbsp;&nbsp;景&nbsp;&nbsp;&nbsp;色</span>
-            <input type="text" name="bgcolor"/>
+            <span>背&nbsp;景&nbsp;色 6位数字</span>
+            <input id="bgcolor" type="text" name="bgcolor"/>
           </div>
           <div>
             <span>展&nbsp;&nbsp;&nbsp;&nbsp;示&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期</span>
@@ -162,15 +204,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <span>图&nbsp;片&nbsp;1280X720</span>
             <input id="uploadImage" type="file" name="image"/>
           </div>
-    			<div>
+          <div>
             <input class="save" type="submit" value="保存"/>
           </div>
-  		</form>
+      </form>
 
-      <div class="preview">
-        <div class="image"><img id="preImage" src="">
+      <div id="preview">
+        <img id="imgArea" src=""/>
       </div>
-
     </div>
   </body>
 </html>
