@@ -63,6 +63,9 @@ public class SaveLauncherAction extends BaseAction {
         if (reject(GET)) {
             return INPUT;
         }
+        if (EmptyUtil.isEmpty(title) || EmptyUtil.isEmpty(image) || EmptyUtil.isEmpty(revealDate) || EmptyUtil.isEmpty(bgcolor)) {
+            return INPUT;
+        }
         String imageDir = null;
         String root = EnvUtil.getRoot();
         if (EmptyUtil.isNotEmpty(root)) {
@@ -70,7 +73,6 @@ public class SaveLauncherAction extends BaseAction {
         } else {
             imageDir = ServletActionContext.getServletContext().getRealPath("/file/image");
         }
-        logger.error("save here");
         /** 生成一个唯一的文件名称 (opId 时间 2位随机数) */
         StringBuilder sb = new StringBuilder();
         sb.append(DateUtil.DATETIMESTR.now()).append(getOpId()).append(RandomUtil.random(2));
@@ -95,5 +97,11 @@ public class SaveLauncherAction extends BaseAction {
         logger.debug("save image {} in {}", imageSaveName, imageDir);
         launcherService.save(mode, title, source, imageSaveName, bgcolor, revealDate, exceed > 0 ? true : false, true, getOpId());
         return SUCCESS;
+    }
+
+    @Override
+    public void validate() {
+
+        super.validate();
     }
 }

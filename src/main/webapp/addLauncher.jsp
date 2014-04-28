@@ -83,7 +83,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-top: 30px;
         margin-left: 150px;
       }
-    </style>    
+      .preview{
+        border: solid 1px;
+        width: 360;
+        height: 640;
+      }
+      .image{
+        height: 100%;
+      }
+    </style>
+
+    <script type="text/javascript">
+      $(function(){
+        function getFullPath(obj) {    //得到图片的完整路径  
+            if (obj) {  
+                //ie  
+                if (window.navigator.userAgent.indexOf("MSIE") >= 1) {  
+                    obj.select();  
+                    return document.selection.createRange().text;  
+                }  
+                //firefox  
+                else if (window.navigator.userAgent.indexOf("Firefox") >= 1) {  
+                    if (obj.files) {  
+                        return obj.files.item(0).getAsDataURL();  
+                    }  
+                    return obj.value;  
+                }  
+                return obj.value;  
+            }  
+        } 
+
+        $("#uploadImage").change(function(){
+          var path = $(this).val();
+          img = new Image();
+
+          $("#preImage").attr("src", getFullPath(this));
+        });
+      });
+    </script>
+
 	</head>
 
 	<body>
@@ -106,6 +144,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <input type="text" name="source"/>
           </div>
           <div>
+            <span>背&nbsp;&nbsp;&nbsp;景&nbsp;&nbsp;&nbsp;色</span>
+            <input type="text" name="bgcolor"/>
+          </div>
+          <div>
             <span>展&nbsp;&nbsp;&nbsp;&nbsp;示&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期</span>
             <input type="text" name="revealDate"/>
           </div>
@@ -118,12 +160,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </div>
           <div>
             <span>图&nbsp;片&nbsp;1280X720</span>
-            <input type="file" name="image"/>
+            <input id="uploadImage" type="file" name="image"/>
           </div>
     			<div>
             <input class="save" type="submit" value="保存"/>
           </div>
   		</form>
+
+      <div class="preview">
+        <div class="image"><img id="preImage" src="">
+      </div>
+
     </div>
   </body>
 </html>
