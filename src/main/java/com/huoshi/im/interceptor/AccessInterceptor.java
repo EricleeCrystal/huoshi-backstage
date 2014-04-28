@@ -32,13 +32,12 @@ public class AccessInterceptor extends AbstractInterceptor {
             remoteAddr = request.getRemoteAddr();
         }
 
+        Map<String, Object> params = invocation.getInvocationContext().getParameters();
         String uri = request.getRequestURI();
         if (request.getMethod().equalsIgnoreCase("GET")) {
-            Map<String, Object> params = invocation.getInvocationContext().getParameters();
             StringBuilder sb = new StringBuilder();
             for (Entry<String, Object> entry : params.entrySet()) {
                 String value = ((Object[]) entry.getValue())[0].toString();
-                System.out.println(value);
                 sb.append(entry.getKey()).append("=").append(value).append("&");
             }
             if (sb.length() > 0) {
@@ -46,6 +45,16 @@ public class AccessInterceptor extends AbstractInterceptor {
             }
             logger.debug("host:[{}]  request method:[{}]  uri:[{}]", remoteAddr, request.getMethod(), uri);
         } else {
+            StringBuilder sb = new StringBuilder();
+            for (Entry<String, Object> entry : params.entrySet()) {
+                String key = entry.getKey();
+                if (key.equalsIgnoreCase("imei") || key.equalsIgnoreCase("userId")) {
+                    sb.append(key).append("=").append(((Object[]) entry.getValue())[0].toString()).append("&");
+                }
+            }
+            if (sb.length() > 0) {
+                uri += ("?" + sb.substring(0, sb.length() - 1));
+            }
             logger.debug("host:[{}]  request method:[{}]  uri:[{}]", remoteAddr, request.getMethod(), uri);
         }
         return invocation.invoke();
