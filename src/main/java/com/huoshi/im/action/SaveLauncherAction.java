@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -36,26 +37,37 @@ public class SaveLauncherAction extends BaseAction {
     private Logger logger = LogUtil.getLogger();
 
     @Setter
+    @Getter
     private int mode;
     @Setter
+    @Getter
     private String title;
     @Setter
+    @Getter
     private String source;
     @Setter
+    @Getter
     private String revealDate;
     @Setter
+    @Getter
     private int exceed;
     @Setter
+    @Getter
     private String bgcolor;
+    @Getter
+    private String msg;
 
     /** 上传的文件 */
     @Setter
+    @Getter
     private File image;
     /** 上传的文件名称 */
     @Setter
+    @Getter
     private String imageFileName;
     /** 请求的图片格式 */
     @Setter
+    @Getter
     private String imageContentType;
 
     @Override
@@ -64,8 +76,29 @@ public class SaveLauncherAction extends BaseAction {
             return INPUT;
         }
         if (EmptyUtil.isEmpty(title) || EmptyUtil.isEmpty(image) || EmptyUtil.isEmpty(revealDate) || EmptyUtil.isEmpty(bgcolor)) {
+            msg = "内容不完整";
             return INPUT;
         }
+        // 校验颜色合法性
+        bgcolor = bgcolor.trim();
+        if (bgcolor.length() != 6) {
+            msg = "背景色需要6位   0-F 字符";
+        } else {// 判断是否有非法数字
+            try {
+                Long.valueOf(bgcolor, 16);
+            } catch (Exception e) {
+                msg = "背景色不合法 6位   0-F 字符";
+            }
+        }
+        if (EmptyUtil.isNotEmpty(msg)) {
+            return INPUT;
+        }
+        if (!DateUtil.DATE.verifyDate(revealDate)) {
+            msg = "日期不正确";
+            return INPUT;
+        }
+
+        bgcolor = "0x" + bgcolor + "ff";
         String imageDir = null;
         String root = EnvUtil.getRoot();
         if (EmptyUtil.isNotEmpty(root)) {
@@ -97,11 +130,5 @@ public class SaveLauncherAction extends BaseAction {
         logger.debug("save image {} in {}", imageSaveName, imageDir);
         launcherService.save(mode, title, source, imageSaveName, bgcolor, revealDate, exceed > 0 ? true : false, true, getOpId());
         return SUCCESS;
-    }
-
-    @Override
-    public void validate() {
-
-        super.validate();
     }
 }

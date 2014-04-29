@@ -97,8 +97,17 @@
 			<result name="success">/addLauncher.jsp</result>
 		</action>
 		<action name="saveLauncher" class="com.huoshi.im.action.SaveLauncherAction">
+			<result name="input" type="redirectAction">
+				<param name="actionName">addLauncher</param>
+				<param name="mode">${mode}</param>
+				<param name="title">${title}</param>
+				<param name="source">${source}</param>
+				<param name="revealDate">${revealDate}</param>
+				<param name="exceed">${exceed}</param>
+				<param name="bgcolor">${bgcolor}</param>
+				<param name="msg">${msg}</param>
+			</result>
 			<result name="success" type="redirect">launcher</result>
-			<result name="input" type="redirect">/index.html</result>
 		</action>
 	</package>
 

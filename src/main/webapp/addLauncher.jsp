@@ -5,9 +5,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-    <head>
-      <base href="<%=basePath%>">
-      <title>启动图片管理</title>
+  <head>
+    <base href="<%=basePath%>">
+    <title>启动图片管理</title>
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="expires" content="0">    
@@ -92,8 +92,63 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       #imgArea{
         display: none;
       }
+      #msg{
+        height: 50px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: red;
+      }
     </style>
-
+      <%
+        int mode = 1;
+        Integer modeObj = (Integer)request.getAttribute("mode");
+        if(modeObj != null){
+          mode = modeObj.intValue();
+          if(mode < 1 || mode > 3){
+            mode = 1;
+          }
+        }
+        String title = (String)request.getAttribute("title");
+        if(title == null){
+          title = "";
+        }else{
+          title = title.trim();
+        }
+        String source = (String)request.getAttribute("source");
+        if(source == null){
+          source = "";
+        }else{
+          source = source.trim();
+        }
+        String revealDate = (String)request.getAttribute("revealDate");
+        if(revealDate == null){
+          revealDate = "";
+        }else{
+          revealDate = revealDate.trim();
+        }
+        int exceed = 0;
+        Integer exceedObj = (Integer)request.getAttribute("exceed");
+        if(exceedObj != null){
+          exceed = exceedObj.intValue();
+          if(exceed < 0){
+            exceed = 0;
+          }else if(exceed > 1){
+            exceed = 1;
+          }
+        }
+        String bgcolor = (String)request.getAttribute("bgcolor");
+        if(bgcolor == null){
+          bgcolor = "";
+        }else{
+          bgcolor = bgcolor.trim();
+        }
+        String msg = (String)request.getAttribute("msg");
+        if(msg == null){
+          msg = "";
+        }else{
+          msg = msg.trim();
+        }        
+      %>
     <script type="text/javascript">
       $(function(){
         function previewImage(file){
@@ -157,11 +212,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         $("#bgcolor").on('input',function(event){
           var bgcolor = $(this).val();
-          // $("#preview").attr("bgColor",''+bgcolor+'');
           $("#preview").css("background-color",'#'+bgcolor+'');
         });
-
-      });     
+        //将原有信息填充
+        $("option[value='<%=mode%>']").attr("selected","selected");
+        $("input[name='title']").attr("value", "<%=title%>");
+        $("input[name='source']").attr("value", "<%=source%>");
+        $("input[name='bgcolor']").attr("value", "<%=bgcolor%>");
+        $("#preview").css("background-color",'#<%=bgcolor%>');
+        $("input[name='revealDate']").attr("value", "<%=revealDate%>");
+        $("input[name='exceed'][value='<%=exceed%>']").attr("checked", "true");
+        $("#msg").html("<%=msg%>");
+      });
     </script>
 
   </head>
@@ -169,7 +231,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
     <div class="body">
       <div class="title">启动页添加</div>
+
       <form action="saveLauncher" method="post" enctype="multipart/form-data">
+          <div id="msg">错误消息</div>
           <div><span>模&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;式</span>
             <select name="mode">
               <option value="1">图片模式</option>
@@ -187,10 +251,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </div>
           <div>
             <span>背&nbsp;景&nbsp;色 6位数字</span>
-            <input id="bgcolor" type="text" name="bgcolor"/>
+            <input id="bgcolor" type="text" name="bgcolor" maxlength="6"/>
           </div>
           <div>
-            <span>展&nbsp;&nbsp;&nbsp;&nbsp;示&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期</span>
+            <span>展&nbsp;示&nbsp;日&nbsp;期&nbsp;yyyy-MM-dd</span>
             <input type="text" name="revealDate"/>
           </div>
           <div>

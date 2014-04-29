@@ -1,5 +1,7 @@
 package com.huoshi.im.action;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,28 @@ import org.springframework.stereotype.Service;
 @Service
 @Scope("prototype")
 public class AddLauncherAction extends BaseAction {
+
+    @Setter
+    @Getter
+    private int mode;
+    @Setter
+    @Getter
+    private String title;
+    @Setter
+    @Getter
+    private String source;
+    @Setter
+    @Getter
+    private String revealDate;
+    @Setter
+    @Getter
+    private int exceed;
+    @Setter
+    @Getter
+    private String bgcolor;
+    @Setter
+    @Getter
+    private String msg;
 
     @Override
     public String execute() throws Exception {
