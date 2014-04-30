@@ -73,8 +73,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         margin-bottom: 5px;
         width: 100%;
       }
-      .th{
+      .th *{
         margin-bottom: 5px;
+        padding: 0;
+
+      }
+      td{
+        padding-top: 50px;        
+      }
+      .td *{
+        padding-left: 0; 
+        padding-right: 0;
       }
       .seqId{
         width: 50px;
@@ -85,23 +94,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       .launcerTitle{
         width: 100px;
       }
-      .regTime, .loginTime{
-        width: 200px;
-      }
-      .loginip{
+      .source{
         width: 100px;
       }
-      .loginAddr{
-        width: 200px;
+      .image{
+        width: 90px;
+      }
+      .revealDate{
+        width: 100px;
+      }
+      .exceed{
+        width: 100px;
+      }
+      .operaterName{
+        width: 100px;
+      }
+      .createTime{
+        width: 100px;
       }
       .edit{
-        margin-top: -4px;
         width: 100px;
       }
+
       .edit a{
         height: 27px;
+        margin-left: 20px;
+      }
+      td[class="image"]{
+        margin-top: 0;
+        width: 90px;
+        height: 140px;
+        padding-top: 0px;
+      }
+      .bg{
+        width: 80px;
+        height: 130px;
+        margin-left: 5px;
+        text-align:center;
+        border: solid 1px gray;
+      }
+      img{
+        max-width:72px;
+        width:expression(document.body.clientWidth > 72?"72px":"auto" );
+        max-height: 128;
+        height:expression(document.body.clientHeight > 128?"128px":"auto" );
+        display:block;
+        border:0
       }
 
+      /*下面是分页的内容*/
       .page{
         width: 100%;
         height: 50px;
@@ -181,8 +222,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <th class="source">来源</th>
             <th class="image">图片</th>
             <th class="revealDate">展示日期</th>
-            <th class="exceed">是否延期展示</th>
-            <th class="valid">是否有效</th>
+            <th class="exceed">延期展示</th>
+            <th class="valid">状态</th>
             <th class="operaterName">操作员</th>
             <th class="createTime">创建时间</th>
             <th class="edit"></th>
@@ -194,14 +235,85 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               %>
               <tr class="td">
                 <td class="seqId"><%=launcherVo.getSeqId()%></td>
-                <td class="mode"><%=launcherVo.getMode()%></td>
+                <td class="mode">
+                  <%
+                    int mode = launcherVo.getMode();
+                    if(mode == 1){
+                    %>
+                      图片模式
+                    <%
+                    }else if(mode == 2){
+                    %>
+                      文字模式
+                    <%
+                    }else if(mode == 3){
+                    %>
+                      图文组合模式
+                    <%
+                    }else{
+                    %>
+                      未知
+                    <%
+                    }
+                  %>
+                </td>
                 <td class="launcerTitle"><%=launcherVo.getTitle()%></td>
                 <td class="source"><%=launcherVo.getSource()%></td>
-                <td class="image"><%=launcherVo.getImage()%></td>
+                <td class="image">
+                  <%
+                    String bgcolor = launcherVo.getBgcolor();
+                    if(bgcolor != null && bgcolor.length()==10){
+                      bgcolor = "#"+bgcolor.substring(2,8);
+                    }else{
+                      bgcolor = "";
+                    }
+                  %>
+                  <div class="bg" style="background-color:<%=bgcolor%>">
+                    <img src="<%=launcherVo.getImage()%>"/>
+                  </div>
+                </td>
                 <td class="revealDate"><%=launcherVo.getRevealDate()%></td>
-                <td class="exceed"><%=launcherVo.isExceed()%></td>
-                <td class="valid"><%=launcherVo.isValid()%></td>
-                <td class="operaterName"><%=launcherVo.getOpName()%></td>
+                <td class="exceed">
+                  <%
+                    if(launcherVo.isExceed()){
+                    %>
+                      是
+                    <%                    
+                    }else{
+                    %>
+                      否
+                    <%
+                    }
+                  %>
+                </td>
+                <td class="valid">
+                  <%
+                    if(launcherVo.isValid()){
+                    %>
+                      有效
+                    <%                    
+                    }else{
+                    %>
+                      无效
+                    <%
+                    }
+                  %>                  
+                </td>
+                <td class="operaterName">
+                  <%
+                    String opName = launcherVo.getOpName();
+                    if(opName == null || opName.length()==0){
+                    %>
+                      系统操作
+                    <%                    
+                    }else{
+                    %>
+                      <%=opName%>
+                    <%
+                    }
+                  %> 
+                  <%=launcherVo.getOpName()%>
+                </td>
                 <td class="createTime"><%=launcherVo.getCreateTime()%></td>
                 <td class="edit">
                   <a class="button" href="./editlauncher?launcherId=<%=launcherVo.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
@@ -215,32 +327,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="page">
           <%
           int pageTotal = data.getPageTotal();
-          int pageNo = data.getPageNo();
-          String href = "./launcher?sort=" + sort + "&pageSize=" + data.getPageSize() + "&pageNo=";
-          if(pageNo > 1){
-          %>
-            <a class="pageBtn" href="<%=href%>1">第一页<a>
-            <a class="pageBtn" href="<%=href%><%=(pageNo-1)%>">&lt; 上一页<a>
-          <%
-          }
-          if(pageTotal <= 10){
-            for(int i = 1; i <= pageTotal; i++){
-              if(i == pageNo){
-              %>
-                <a href="<%=href%><%=i%>" class="curr"><%=i%><a>
-              <%
-              }else{
-              %>
-                <a href="<%=href%><%=i%>" class="pageBtn"><%=i%><a>
-              <%
-              }
+          if(pageTotal > 1){
+            int pageNo = data.getPageNo();
+            String href = "./launcher?sort=" + sort + "&pageSize=" + data.getPageSize() + "&pageNo=";
+            if(pageNo > 1){
+            %>
+              <a class="pageBtn" href="<%=href%>1">第一页<a>
+              <a class="pageBtn" href="<%=href%><%=(pageNo-1)%>">&lt; 上一页<a>
+            <%
             }
-          }else{
-            if(pageNo <= 5){
-              for(int i = 1; i <= 10; i++){
+            if(pageTotal <= 10){
+              for(int i = 1; i <= pageTotal; i++){
                 if(i == pageNo){
                 %>
-                  <a class="curr"><%=i%><a>
+                  <a href="<%=href%><%=i%>" class="curr"><%=i%><a>
                 <%
                 }else{
                 %>
@@ -249,8 +349,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
               }
             }else{
-              if(pageTotal - pageNo >= 5){
-                for(int i = pageNo - 4; i <= pageNo + 5; i++){
+              if(pageNo <= 5){
+                for(int i = 1; i <= 10; i++){
                   if(i == pageNo){
                   %>
                     <a class="curr"><%=i%><a>
@@ -262,26 +362,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   }
                 }
               }else{
-                for(int i = pageTotal - 9; i <= pageTotal; i++){
-                  if(i == pageNo){
-                  %>
-                    <a href="<%=href%><%=i%>" class="curr"><%=i%><a>
-                  <%
-                  }else{
-                  %>
-                    <a href="<%=href%><%=i%>" class="pageBtn"><%=i%><a>
-                  <%
+                if(pageTotal - pageNo >= 5){
+                  for(int i = pageNo - 4; i <= pageNo + 5; i++){
+                    if(i == pageNo){
+                    %>
+                      <a class="curr"><%=i%><a>
+                    <%
+                    }else{
+                    %>
+                      <a href="<%=href%><%=i%>" class="pageBtn"><%=i%><a>
+                    <%
+                    }
+                  }
+                }else{
+                  for(int i = pageTotal - 9; i <= pageTotal; i++){
+                    if(i == pageNo){
+                    %>
+                      <a href="<%=href%><%=i%>" class="curr"><%=i%><a>
+                    <%
+                    }else{
+                    %>
+                      <a href="<%=href%><%=i%>" class="pageBtn"><%=i%><a>
+                    <%
+                    }
                   }
                 }
               }
             }
-          }
-          if(pageNo < pageTotal){
-          %>
-            <a class="pageBtn" href="<%=href%><%=(pageNo+1)%>">下一页 &gt;<a>          
-            <a class="pageBtn" href="<%=href%><%=pageTotal%>">最后一页<a>
-          <%
-          }
+            if(pageNo < pageTotal){
+            %>
+              <a class="pageBtn" href="<%=href%><%=(pageNo+1)%>">下一页 &gt;<a>          
+              <a class="pageBtn" href="<%=href%><%=pageTotal%>">最后一页<a>
+            <%
+            }
+          }          
           %>
         </div>
 
