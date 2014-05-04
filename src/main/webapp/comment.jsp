@@ -127,24 +127,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class="comments">
         <%
           for(CommentVo c:data.getList()){
-
+          %>
+          <div class="comment" commentid="<%=c.getSeqId()%>">
+          <div class="index">
+            <span class="user"><%=c.getUserName()%></span>
+            <span class="time"><%=c.getCreateTime()%></span>
+            <span class="floor"><%=c.getFloorNo()%>楼</span>
+            <%
+              if(c.isForbid()){
+              %>
+                <span class="forbid warn" isforbid="1">屏蔽</span>
+              <%
+              }else{
+              %>
+                <span class="forbid" isforbid="0">显示</span>
+              <%
+              }
+            %>
+          </div>
+          <div class="content">%=c.getContent()%></div>
+          <a class="button edit" href="./">修改</a>
+          </div>
+        <%
           }
         %>
-                          var html = "<div class=\"comment\" commentid=\""
-                    + arr[i].seqId
-                    + "\"><div class=\"index\"><span class=\"user\">"
-                    + arr[i].userName
-                    + "</span><span class=\"time\">"
-                    + arr[i].createTime
-                    + "</span><span class=\"floor\">"
-                    + arr[i].floorNo
-                    + "楼</span>"
-                    + forbidHtml
-                    + "</div><div class=\"content\">"
-                    + arr[i].content
-                    + "</div><div class=\"button edit\" cid=\""
-                    + arr[i].seqId
-                    + "\">修改</div></div>";
+
       </div>
 
       <!--分页-->

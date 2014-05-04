@@ -9,12 +9,17 @@ import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
-import com.huoshi.im.vo.CommentVo;
 
+/**
+ * 修改评论
+ * 
+ * @author: Ericlee
+ * @date:2014-05-04 23:24:24
+ */
 @SuppressWarnings("serial")
 @Service
 @Scope("prototype")
-public class UpdateCommentAction extends BaseAction {
+public class ModifyCommentAction extends BaseAction {
 
     @Setter
     private int cid;
