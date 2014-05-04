@@ -316,7 +316,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </td>
                 <td class="createTime"><%=launcherVo.getCreateTime()%></td>
                 <td class="edit">
-                  <a class="button" href="./editlauncher?launcherId=<%=launcherVo.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
+                  <a class="button" href="./editLauncher?seqId=<%=launcherVo.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
                 </td>
               </tr>
               <%

@@ -60,8 +60,10 @@
 			<result name="error">/index.html</result>
 			<result name="success">/section.jsp</result>
 		</action>
+		
+		<!-- 评论 -->
 		<action name="comment" class="com.huoshi.im.action.CommentAction">
-			<result name="error">/index.html</result>
+			<result name="input" type="redirectAction">book</result>
 			<result name="success">/comment.jsp</result>
 		</action>
 
@@ -70,7 +72,6 @@
 			<result name="error">/index.html</result>
 			<result name="success">/user.jsp</result>
 		</action>
-
 		<action name="editUser" class="com.huoshi.im.action.EditUserAction">
 			<result name="error" type="redirectAction">
 				<param name="actionName">user</param>
@@ -109,6 +110,30 @@
 			</result>
 			<result name="success" type="redirect">launcher</result>
 		</action>
+		<action name="editLauncher" class="com.huoshi.im.action.EditLauncherAction">
+			<result name="input" type="redirectAction">
+				<param name="actionName">launcher</param>
+				<param name="sort">${sort}</param>
+				<param name="pageNo">${pageNo}</param>
+				<param name="pageSize">${pageSize}</param>
+			</result>
+			<result name="success">/editLauncher.jsp</result>
+		</action>
+		<action name="modifyLauncher" class="com.huoshi.im.action.ModifyLauncherAction">
+			<result name="input" type="redirectAction">
+				<param name="actionName">editLauncher</param>
+				<param name="sort">${sort}</param>
+				<param name="pageNo">${pageNo}</param>
+				<param name="pageSize">${pageSize}</param>
+			</result>
+			<result name="success" type="redirectAction">
+				<param name="actionName">launcher</param>
+				<param name="sort">${sort}</param>
+				<param name="pageNo">${pageNo}</param>
+				<param name="pageSize">${pageSize}</param>
+			</result>
+		</action>
+
 	</package>
 
 	<package name="json" extends="struts-default">

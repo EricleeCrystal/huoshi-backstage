@@ -49,7 +49,7 @@ public class UpdateCommentAction extends BaseAction {
         }
         // 首先查找用户名是否已经注册 如果已经注册 使用原有的用户如果没有注册 新注册一个
         User user = userService.registerifAbsent(userName);
-        CommentVo commentVo = commentService.updateComment(user, cid, createTime, floorNo, content, forbid <= 0 ? false : true);
-        write(JsonUtil.toRtnMsgJson(commentVo));
+        // CommentVo commentVo = commentService.updateComment(user, cid, createTime, floorNo, content, forbid <= 0 ? false : true);
+        // write(JsonUtil.toRtnMsgJson(commentVo));
     }
 }
