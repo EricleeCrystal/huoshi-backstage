@@ -108,9 +108,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         height: 50px;
         margin-top: 10px;
         font-size: 12px;
-      }
-
-      .page{
         font-family: arial,sans-serif;
         padding-left: 150px;
       }

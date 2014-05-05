@@ -83,10 +83,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           UserVo userVo = (UserVo)request.getAttribute("userVo");
         %>
         <form action="modifyUser">
-          <input name="sort" value="<%=sort%>" readOnly="true" input type="hidden">
-          <input name="pageNo" value="<%=pageNo%>" readOnly="true" input type="hidden">
-          <input name="pageSize" value="<%=pageSize%>" readOnly="true" input type="hidden">
-          <input name="seqId" value="<%=userVo.getSeqId()%>" readOnly="true" input type="hidden">
+          <input name="sort" value="<%=sort%>" readOnly="true" type="hidden">
+          <input name="pageNo" value="<%=pageNo%>" readOnly="true" type="hidden">
+          <input name="pageSize" value="<%=pageSize%>" readOnly="true" type="hidden">
+          <input name="seqId" value="<%=userVo.getSeqId()%>" readOnly="true" type="hidden">
 
           <div class="userId"><span>userId</span><input name="userId" value="<%=userVo.getUserId()%>" readOnly="true"></div>
           <div class="userName"><span>用户名</span><input name="userName" value="<%=userVo.getUserName()%>"></div>

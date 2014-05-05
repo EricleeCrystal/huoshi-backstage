@@ -178,7 +178,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           msg = "";
         }else{
           msg = msg.trim();
-        }        
+        }    
       %>
     <script type="text/javascript">
       $(function(){

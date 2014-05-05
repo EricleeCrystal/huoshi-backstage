@@ -1,13 +1,12 @@
 package com.huoshi.im.action;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import com.huoshi.im.po.User;
 import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.UserService;
-import com.huoshi.im.util.JsonUtil;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 
 /**
@@ -22,17 +21,37 @@ import com.huoshi.im.util.ValueUtil.EmptyUtil;
 public class ModifyCommentAction extends BaseAction {
 
     @Setter
+    @Getter
     private int cid;
     @Setter
-    private String userName;
+    @Getter
+    private int userId;
     @Setter
-    private String createTime;
-    @Setter
-    private int floorNo;
-    @Setter
+    @Getter
     private String content;
     @Setter
+    @Getter
     private int forbid;
+
+    /** 0 外部账号 1 内部账号 外部账号只允许审核 不能进行其他操作 */
+    @Getter
+    @Setter
+    private int userType;
+    @Getter
+    @Setter
+    private int chapterId;
+    @Getter
+    @Setter
+    private int sort;
+    @Getter
+    @Setter
+    private int pageSize;
+    @Getter
+    @Setter
+    private int pageNo;
+    @Getter
+    @Setter
+    private String msg;
 
     @Autowired
     private UserService userService;
@@ -40,21 +59,16 @@ public class ModifyCommentAction extends BaseAction {
     private CommentService commentService;
 
     @Override
-    public void process() throws Exception {
-        String result = "";
-        if (EmptyUtil.isEmpty(userName)) {
-            result = "username should not be empty";
-            write(JsonUtil.toErrorRtnMsgJson(result));
-            return;
+    public String execute() throws Exception {
+        if (userType == 0) {
+            commentService.modifyComment(cid, forbid > 0 ? true : false);
+        } else {
+            if (EmptyUtil.isEmpty(content)) {
+                msg = "内容不能为空";
+                return INPUT;
+            }
+            commentService.modifyComment(cid, userId, forbid > 0 ? true : false, content);
         }
-        if (EmptyUtil.isEmpty(content)) {
-            result = "commment content should not be empty";
-            write(JsonUtil.toErrorRtnMsgJson(result));
-            return;
-        }
-        // 首先查找用户名是否已经注册 如果已经注册 使用原有的用户如果没有注册 新注册一个
-        User user = userService.registerifAbsent(userName);
-        // CommentVo commentVo = commentService.updateComment(user, cid, createTime, floorNo, content, forbid <= 0 ? false : true);
-        // write(JsonUtil.toRtnMsgJson(commentVo));
+        return super.execute();
     }
 }

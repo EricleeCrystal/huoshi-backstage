@@ -24,102 +24,90 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 		<meta http-equiv="description" content="This is my page">
 
-    <link rel="stylesheet" href="static/css/jquery.ui.all.css">
     <link rel="stylesheet" href="static/css/comment.css">
 
     <script src="static/script/jquery-2.1.0.min.js" type="text/javascript"></script>
+    <style type="text/css">
+      .title a{
+        position: relative;
+        float: left;
+        margin-left: 30px;
+      }
+      .title > a:first-child{
+        margin-left: 70%;
+      }
+      .vote{
+        margin-left: 40px;
+      }
+      /*分页*/
+      .page{
+          width: 100%;
+          height: 50px;
+          margin-top: 10px;
+          font-size: 12px;
+          font-family: arial,sans-serif;
+          padding-left: 150px;
+      }
+      .page *{
+          position: relative;
+          float: left;
+          font-size: 11px;
+          margin-left: 10px;
+      }
+      .page .curr{
+          font-weight: bold;
+          height: 29px;
+          line-height: 27px;
+          min-width: 21px;
+          padding: 0 8px;
+          text-align: center;
+      }
 
-    <script src="static/script/ui/jquery.ui.core.js"></script>
-    <script src="static/script/ui/jquery.ui.widget.js"></script>
-    <script src="static/script/ui/jquery.ui.mouse.js"></script>
-    <script src="static/script/ui/jquery.ui.button.js"></script>
-    <script src="static/script/ui/jquery.ui.draggable.js"></script>
-    <script src="static/script/ui/jquery.ui.position.js"></script>
-    <script src="static/script/ui/jquery.ui.resizable.js"></script>
-    <script src="static/script/ui/jquery.ui.button.js"></script>
-    <script src="static/script/ui/jquery.ui.dialog.js"></script>
-    <script src="static/script/ui/jquery.ui.effect.js"></script>
+      .page .pageBtn{
+          position: relative;        
+          float: left;
+          cursor: pointer;
+          background-color: #F5F5F5;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          height: 29px;
+          line-height: 27px;
+          min-width: 21px;
+          padding: 0 8px;
+          text-align: center;
+      }
+    </style>
 
-    <script type="text/javascript">
-      $(function(){
-        $("#userselector").change(function(event) {
-          displayUser();
-        });
-        //展现用户信息
-        function displayUser(){
-          var userId = $("#userselector").val();
-          var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
-          var addr = $("option[value="+userId+"]").attr("addr");
-          // $("#userInfo").html("&nbsp;&nbsp;用户Id:&nbsp;" + userId + " &nbsp;&nbsp;用户名:" + userName + " &nbsp;&nbsp;ip地址:&nbsp;"+loginAddr + "&nbsp;&nbsp;地理位置:"+addr);
-          $("#userInfo>div[class='userId']>div").html(userId);
-          $("#userInfo>div[class='ip']>div").html(loginAddr);
-          $("#userInfo>div[class='addr']>div").html(addr);
-        }
-        displayUser();
-      });
-    </script>
+
   </head>
 	<body>
     <div class="body">
 
       <div class="title">
         <div class="chapter"><%=bookVo.getBookName()%> <br> 第<%=chapterVo.getChapterNo()%>章</div>
-        <div class="user">
-          <span>切换用户</span>
-          <select id="userselector">
-            <%
-              List<UserVo> userVoList = (List<UserVo>)request.getAttribute("userVoList");
-              for(UserVo userVo:userVoList){
-            %>
-              <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"><%=userVo.getUserName()%></option>
-            <%
-              }
-            %>
-          </select>
-          <div id="userInfo">
-            <div class="userId">
-              <span>Id:</span>
-              <div></div>
-            </div>
-            <div class="ip">
-              <span>IP:</span>
-              <div></div>
-            </div>
-            <div class="addr">
-              <span>addr:</span>
-              <div></div>           
-            </div>
-          </div>
-        </div>
-        <div class="title">
-          <%
-
-            if(sort == 1){
-            %>
-              <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
-              <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
-              <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
-            <%
-            }else if(sort == 2){
-            %>
-              <a class="all" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
-              <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
-              <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
-            <%
-            }else{
-            %>
-              <a class="all" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
-              <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
-              <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
-            <%
-            }
-          %>
-          <a href="./addLauncher" class="button">添加</a>
-        </div>
       </div>
-
-      <div class="button" id="save">
-        添加评论
+      <div class="title">
+        <%
+          if(sort == 0){
+          %>
+            <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
+          <%
+          }else if(sort == 1){
+          %>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
+            <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
+          <%
+          }else{
+          %>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=0&pageNo=1&pageSize=12">最近</a>
+            <a href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=1&pageNo=1&pageSize=12">最前</a>
+            <a class="selected" href="./comment?chapterId=<%=chapterVo.getChapterNo()%>&sort=2&pageNo=1&pageSize=12">点赞</a>
+          <%
+          }
+        %>
+        <a href="./postComment?chapterId=<%=chapterVo.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>" class="button">添加评论</a>
       </div>
 
       <div id="msg" hidden="true">添加成功</div>
@@ -133,6 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <span class="user"><%=c.getUserName()%></span>
             <span class="time"><%=c.getCreateTime()%></span>
             <span class="floor"><%=c.getFloorNo()%>楼</span>
+            <span class="vote">赞 <%=c.getTotalVote()%></span>
             <%
               if(c.isForbid()){
               %>
@@ -145,8 +134,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
             %>
           </div>
-          <div class="content">%=c.getContent()%></div>
-          <a class="button edit" href="./">修改</a>
+          <div class="content"><%=c.getContent()%></div>
+          <a class="button edit" href="./editComment?cid=<%=c.getSeqId()%>&chapterId=<%=chapterVo.getChapterNo()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
           </div>
         <%
           }
@@ -161,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         int pageTotal = data.getPageTotal();
         if(pageTotal > 1){
           int pageNo = data.getPageNo();
-          String href = "./launcher?sort=" + sort + "&pageSize=" + data.getPageSize() + "&pageNo=";
+          String href = "./comment?chapterId=" + chapterVo.getSeqId() + "&sort=" + sort + "&pageSize=" + data.getPageSize() + "&pageNo=";
           if(pageNo > 1){
           %>
             <a class="pageBtn" href="<%=href%>">第一页<a>

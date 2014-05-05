@@ -1,6 +1,5 @@
 package com.huoshi.im.action;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +8,11 @@ import org.springframework.stereotype.Service;
 import com.huoshi.im.po.Chapter;
 import com.huoshi.im.service.BookService;
 import com.huoshi.im.service.CommentService;
-import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
 import com.huoshi.im.vo.BookVo;
 import com.huoshi.im.vo.ChapterVo;
 import com.huoshi.im.vo.CommentVo;
 import com.huoshi.im.vo.Page;
-import com.huoshi.im.vo.UserVo;
 
 /**
  * 仅供后端服务器调用
@@ -32,8 +29,6 @@ public class CommentAction extends BaseAction {
     private BookService bookService;
     @Autowired
     private CommentService commentService;
-    @Autowired
-    private UserService userService;
 
     private static int defaultChapterId = 1;
     /** 默认的页码和页大小 */
@@ -59,9 +54,6 @@ public class CommentAction extends BaseAction {
     private BookVo bookVo;
     @Getter
     private ChapterVo chapterVo;
-    /** 当前操作使用的账号 */
-    @Getter
-    private List<UserVo> userVoList;
 
     @Getter
     private Page<CommentVo> page;
@@ -74,7 +66,6 @@ public class CommentAction extends BaseAction {
         }
         chapterVo = new ChapterVo(chapter);
         bookVo = new BookVo(chapter.getBook());
-        userVoList = userService.queryInnerUser();
         page = commentService.queryPageByChapter(chapter, sort, pageNo, pageSize);
         return super.execute();
     }
