@@ -135,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             %>
           </div>
           <div class="content"><%=c.getContent()%></div>
-          <a class="button edit" href="./editComment?cid=<%=c.getSeqId()%>&chapterId=<%=chapterVo.getChapterNo()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
+          <a class="button edit" href="./editComment?cid=<%=c.getSeqId()%>&sort=<%=sort%>&pageNo=<%=data.getPageNo()%>&pageSize=<%=data.getPageSize()%>">修改</a>
           </div>
         <%
           }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
+import com.huoshi.im.vo.CommentVo;
 
 /**
  * 修改评论
@@ -28,6 +29,9 @@ public class ModifyCommentAction extends BaseAction {
     private int userId;
     @Setter
     @Getter
+    private String userName;
+    @Setter
+    @Getter
     private String content;
     @Setter
     @Getter
@@ -38,7 +42,6 @@ public class ModifyCommentAction extends BaseAction {
     @Setter
     private int userType;
     @Getter
-    @Setter
     private int chapterId;
     @Getter
     @Setter
@@ -60,14 +63,18 @@ public class ModifyCommentAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        CommentVo commentVo = null;
         if (userType == 0) {
-            commentService.modifyComment(cid, forbid > 0 ? true : false);
+            commentVo = commentService.modifyComment(cid, forbid > 0 ? true : false);
         } else {
             if (EmptyUtil.isEmpty(content)) {
                 msg = "内容不能为空";
                 return INPUT;
             }
-            commentService.modifyComment(cid, userId, forbid > 0 ? true : false, content);
+            commentVo = commentService.modifyComment(cid, userId, forbid > 0 ? true : false, content);
+        }
+        if (EmptyUtil.isNotEmpty(commentVo)) {
+            chapterId = commentVo.getChapterId();
         }
         return super.execute();
     }

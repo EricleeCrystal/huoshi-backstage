@@ -6,10 +6,13 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.huoshi.im.po.User;
 import com.huoshi.im.service.BookService;
 import com.huoshi.im.service.CommentService;
 import com.huoshi.im.service.UserService;
 import com.huoshi.im.util.ValueUtil.EmptyUtil;
+import com.huoshi.im.vo.BookVo;
+import com.huoshi.im.vo.ChapterVo;
 import com.huoshi.im.vo.CommentVo;
 import com.huoshi.im.vo.UserVo;
 
@@ -36,9 +39,6 @@ public class EditCommentAction extends BaseAction {
     private int cid;
     @Getter
     @Setter
-    private int chapterId;
-    @Getter
-    @Setter
     private int sort;
     @Getter
     @Setter
@@ -53,12 +53,24 @@ public class EditCommentAction extends BaseAction {
     @Getter
     @Setter
     private int userId;
-    /** 当前操作使用的账号 */
     @Getter
-    private List<UserVo> userVoList;
+    @Setter
+    private String userName;
+    @Getter
+    @Setter
+    private String content;
     @Getter
     @Setter
     private CommentVo commentVo;
+    @Getter
+    @Setter
+    private ChapterVo chapterVo;
+    @Getter
+    @Setter
+    private BookVo bookVo;
+    /** 当前操作使用的账号 */
+    @Getter
+    private List<UserVo> userVoList;
 
     @Override
     public String execute() throws Exception {
@@ -66,13 +78,23 @@ public class EditCommentAction extends BaseAction {
         if (EmptyUtil.isEmpty(commentVo)) {
             return INPUT;
         }
+        chapterVo = bookService.queryChapterVoById(commentVo.getChapterId());
+        if (EmptyUtil.isEmpty(chapterVo)) {
+            return INPUT;
+        }
+        bookVo = bookService.queryBookVoById(chapterVo.getBookId());
         userVoList = userService.queryInnerUser();
         userId = commentVo.getUserId();
         for (UserVo uv : userVoList) {
             if (uv.getUserId() == userId) {
                 userType = 1;
+                userName = uv.getUserName();
                 break;
             }
+        }
+        if (userType == 0) {
+            User u = userService.queryByUserId(userId);
+            userName = u.getUserName();
         }
         return SUCCESS;
     }

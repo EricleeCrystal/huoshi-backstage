@@ -102,8 +102,8 @@
 			<result name="success">/editComment.jsp</result>
 		</action>
 		<action name="modifyComment" class="com.huoshi.im.action.ModifyCommentAction">
-			<result name="error" type="redirectAction">
-				<param name="actionName">comment</param>
+			<result name="input" type="redirectAction">
+				<param name="actionName">editComment</param>
 				<param name="chapterId">${chapterId}</param>
 				<param name="sort">${sort}</param>
 				<param name="pageNo">${pageNo}</param>

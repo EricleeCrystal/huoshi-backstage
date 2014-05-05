@@ -9,6 +9,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
+    <%
+      int sort = ((Integer)request.getAttribute("sort")).intValue();
+      int pageNo = ((Integer)request.getAttribute("pageNo")).intValue();
+      int pageSize = ((Integer)request.getAttribute("pageSize")).intValue();
+      ChapterVo chapterVo = (ChapterVo)request.getAttribute("chapterVo");
+      BookVo bookVo = (BookVo)request.getAttribute("bookVo");
+      CommentVo commentVo = (CommentVo)request.getAttribute("commentVo");
+      int userId = ((Integer)request.getAttribute("userId")).intValue();
+      String userName = (String)request.getAttribute("userName");
+      int userType = ((Integer)request.getAttribute("userType")).intValue();
+
+      String msg = (String)request.getAttribute("msg");
+      if(msg == null){
+        msg = "";
+      }else{
+        msg = msg.trim();
+      }
+      String content = (String)request.getAttribute("content");
+      if(content == null || content.trim().length() == 0){
+        content = commentVo.getContent();
+      }
+    %>
   	<base href="<%=basePath%>">
   	<title>发布评论</title>
     <meta charset="UTF-8">
@@ -95,11 +117,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       input{
         width: 300px;
       }
-
-      .save{
+      .fobid{
+        width: 200px;
+        margin-top: 10px;
+      }
+      .forbid div{
+        width: 200px;
+      }
+      .forbid div input{
+        width: 50px;
+      }      
+      .fobid input{
+        width: 50px;
+      }
+      .modify{
         margin-top: 30px;
         margin-left: 250px;
-        width: 50px;
+        width: 70px;
       }
       #msg{
         height: 50px;
@@ -111,86 +145,100 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </style>
     <script type="text/javascript">
       $(function(){
-        $("#userselector").change(function(event) {
+        <%
+          if(userType == 1){
+        %>
+          $("#userselector").change(function(event) {
+            displayUser();
+          });
+          //展现用户信息
+          function displayUser(){
+            var userId = $("#userselector").val();
+            var text = $("option[value="+userId+"]").text();
+            var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
+            var addr = $("option[value="+userId+"]").attr("addr");
+            $("#userInfo>div[class='userId']>div").html(userId);
+            $("#userInfo>div[class='ip']>div").html(loginAddr);
+            $("#userInfo>div[class='addr']>div").html(addr);
+            $("input[name='userName']").attr("value", text);
+          }
           displayUser();
-        });
-        //展现用户信息
-        function displayUser(){
-          var userId = $("#userselector").val();
-          var text = $("option[value="+userId+"]").text();
-          var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
-          var addr = $("option[value="+userId+"]").attr("addr");
-          $("#userInfo>div[class='userId']>div").html(userId);
-          $("#userInfo>div[class='ip']>div").html(loginAddr);
-          $("#userInfo>div[class='addr']>div").html(addr);
-          $("input[name='userName']").attr("value", text);
+        <%
+          }
+        %>
+        function handleForbid(){
+          var forbidValue=0;
+          if(<%=commentVo.isForbid()%> == true){
+            forbidValue = 1;
+          }
+          $("input[name='forbid'][value='" + forbidValue + "']").attr("checked","true");
+          console.log(forbidValue);
         }
-        displayUser();
+        handleForbid();
       });
     </script>
   	</head>
   	<body>
-      <%
-        int sort = ((Integer)request.getAttribute("sort")).intValue();
-        int pageNo = ((Integer)request.getAttribute("pageNo")).intValue();
-        int pageSize = ((Integer)request.getAttribute("pageSize")).intValue();
-        ChapterVo chapterVo = (ChapterVo)request.getAttribute("chapterVo");
-        BookVo bookVo = (BookVo)request.getAttribute("bookVo");
-        String msg = (String)request.getAttribute("msg");
-        if(msg == null){
-          msg = "";
-        }else{
-          msg = msg.trim();
-        }
-        String content = (String)request.getAttribute("content");
-        int userId = 0;
-        if(content == null || content.trim().length()==0){
-          content = "";
-        }
-      %>
       <div class="body">
         <div class="title">编辑评论</div>
 
-        <div class="user">
-          <span>切换用户</span>
-          <select id="userselector">
-            <%
-              List<UserVo> userVoList = (List<UserVo>)request.getAttribute("userVoList");
-              for(UserVo userVo:userVoList){
-                if(userId == 0){
-                  userId = userVo.getUserId();
+        <%
+          if(userType == 1){
+        %>
+          <div class="user">
+            <span>切换用户</span>
+            <select id="userselector">
+              <%
+                List<UserVo> userVoList = (List<UserVo>)request.getAttribute("userVoList");
+                for(UserVo userVo:userVoList){
+                  if(userId == 0){
+                    userId = userVo.getUserId();
+                    userName = userVo.getUserName();
+                  }
+              %>
+                <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"><%=userVo.getUserName()%></option>
+              <%
                 }
-            %>
-              <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"><%=userVo.getUserName()%></option>
-            <%
-              }
-            %>
-          </select>
-          <div id="userInfo">
-            <div class="userId">
-              <span>userId:</span>
-              <div></div>
-            </div>
-            <div class="ip">
-              <span>IP:</span>
-              <div></div>
-            </div>
-            <div class="addr">
-              <span>地址:</span>
-              <div></div>
+              %>
+            </select>
+            <div id="userInfo">
+              <div class="userId">
+                <span>userId:</span>
+                <div></div>
+              </div>
+              <div class="ip">
+                <span>IP:</span>
+                <div></div>
+              </div>
+              <div class="addr">
+                <span>地址:</span>
+                <div></div>
+              </div>
             </div>
           </div>
-        </div>
-        <form action="modifyComment">
+        <%
+          }
+        %>
+
+        <form action="modifyComment" method="post">
           <div id="msg"><%=msg%></div>
+          <input name="cid" value="<%=commentVo.getSeqId()%>" readOnly="true" type="hidden">
           <input name="sort" value="<%=sort%>" readOnly="true" type="hidden">
           <input name="pageNo" value="<%=pageNo%>" readOnly="true" type="hidden">
           <input name="pageSize" value="<%=pageSize%>" readOnly="true" type="hidden">
-          <input name="chapterId" value="<%=chapterVo.getSeqId()%>" readOnly="true" type="hidden">
           <input name="userId" value="<%=userId%>" readOnly="true" type="hidden">
-          <div class="bookName"><span>书名</span><input name="bookName" value="<%=bookVo.getBookName()%>" readOnly="true"></div>
-          <div class="userName"><span>用户名</span><input name="userName"></div>
-          <div class="content"><span>内容</span><textarea  name="content" rows="10" cols="38"><%=content%></textarea></div>
+          <input name="userType" value="<%=userType%>" readOnly="true" type="hidden">
+          <div class="bookName"><span>书名</span><input name="bookName" value="<%=bookVo.getBookName()%>" readOnly="true" disabled="disabled"></div>
+          <div class="chapterNo"><span>章节</span><input name="chapterNo" value="<%=chapterVo.getChapterNo()%>" readOnly="true" disabled="disabled"></div>
+          <div class="userName"><span>用户名</span><input name="userName" value="<%=userName%>" readOnly="true" disabled="disabled"></div>
+          <div class="forbid">
+            <span>状态</span>
+            <div>
+              <tt>显示</tt><input type="radio" name="forbid" value="0"/>
+              <tt>禁止</tt><input type="radio" name="forbid" value="1"/>
+            </div>
+          </div>
+          <div class="content"><span>内容</span><textarea name="content" rows="10" cols="38" readOnly="true"><%=content%></textarea></div>
           <div><input class="modify" value="保存修改" type="submit"></div>
         </form>
       </div>
