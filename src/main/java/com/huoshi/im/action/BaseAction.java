@@ -25,6 +25,7 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
     protected Map<String, Object> session;
 
     protected String GET = "GET";
+    protected String POST = "POST";
 
     /**
      * 是否拒绝特定方法访问
@@ -39,6 +40,14 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
             // 如果是开发模式 不拒绝任何访问
             return false;
         }
+    }
+
+    public boolean isGet() {
+        return request.getMethod().equalsIgnoreCase(GET);
+    }
+
+    public boolean isPost() {
+        return request.getMethod().equalsIgnoreCase(POST);
     }
 
     /**

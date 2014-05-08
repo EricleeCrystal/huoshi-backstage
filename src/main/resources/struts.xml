@@ -47,9 +47,16 @@
 			<result name="error">/register.jsp</result>
 		</action>
 		<action name="login" class="com.huoshi.im.action.LoginAction">
-			<result name="success" type="redirect">book</result>
-			<result name="error">/login.jsp</result>
+			<result name="error" type="redirect">
+				<param name="location">/login.jsp</param>
+				<param name="msg">${msg}</param>
+			</result>
+			<result name="success" type="redirect">index</result>
 		</action>
+		<action name="index" class="com.huoshi.im.action.IndexAction">
+			<result name="success">/index.jsp</result>
+		</action>
+		
 		<action name="book" class="com.huoshi.im.action.BookAction">
 			<result name="success">/book.jsp</result>
 		</action>

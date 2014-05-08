@@ -35,16 +35,21 @@ public class LoginAction extends BaseAction {
 
     @Override
     public String execute() throws Exception {
+        // GET请求 直接跳转到登陆页
+        if (isGet()) {
+            return ERROR;
+        }
         if (EmptyUtil.isEmpty(opName) || EmptyUtil.isEmpty(password)) {
             msg = "用户名和密码不能为空";
             return ERROR;
         }
         Operator operator = operatorService.verifyOperator(opName, password);
-        if (EmptyUtil.isNotEmpty(operator)) {
-            session.put("opId", operator.getOpId());
-            session.put("opName", operator.getOpName());
-            return SUCCESS;
+        if (EmptyUtil.isEmpty(operator)) {
+            msg = "用户名或密码错误";
+            return ERROR;
         }
-        return ERROR;
+        session.put("opId", operator.getOpId());
+        session.put("opName", operator.getOpName());
+        return SUCCESS;
     }
 }

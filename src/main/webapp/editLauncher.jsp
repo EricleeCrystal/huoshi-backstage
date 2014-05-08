@@ -311,7 +311,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               </div>
           </div>          
           <div>
-            <span>图&nbsp;片&nbsp;1280X720</span>
+            <span>图&nbsp;片&nbsp;720X1280</span>
             <input id="uploadImage" type="file" name="image"/>
           </div>
           <div>

@@ -148,21 +148,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <%
           if(userType == 1){
         %>
-          $("#userselector").change(function(event) {
+            $("#userselector").change(function(event) {
+              displayUser();
+            });
+            //展现用户信息
+            function displayUser(){
+              var userId = $("#userselector").val();
+              var text = $("option[value="+userId+"]").text();
+              var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
+              var addr = $("option[value="+userId+"]").attr("addr");
+              $("#userInfo>div[class='userId']>div").html(userId);
+              $("#userInfo>div[class='ip']>div").html(loginAddr);
+              $("#userInfo>div[class='addr']>div").html(addr);
+              $("input[name='userName']").attr("value", text);
+              $("input[name='userId']").attr("value", userId);
+            }
             displayUser();
-          });
-          //展现用户信息
-          function displayUser(){
-            var userId = $("#userselector").val();
-            var text = $("option[value="+userId+"]").text();
-            var loginAddr = $("option[value="+userId+"]").attr("loginAddr");
-            var addr = $("option[value="+userId+"]").attr("addr");
-            $("#userInfo>div[class='userId']>div").html(userId);
-            $("#userInfo>div[class='ip']>div").html(loginAddr);
-            $("#userInfo>div[class='addr']>div").html(addr);
-            $("input[name='userName']").attr("value", text);
-          }
-          displayUser();
         <%
           }
         %>
@@ -196,7 +197,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     userName = userVo.getUserName();
                   }
               %>
-                <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"><%=userVo.getUserName()%></option>
+                <option value ="<%=userVo.getUserId()%>" loginAddr="<%=userVo.getLoginAddr()%>" addr="<%=userVo.getAddr()%>"
+                  <%
+                    if(userVo.getUserId() == userId){
+                    %>
+                      selected="selected"
+                    <%
+                    }
+                  %>
+                  ><%=userVo.getUserName()%></option>
               <%
                 }
               %>
@@ -238,7 +247,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <tt>禁止</tt><input type="radio" name="forbid" value="1"/>
             </div>
           </div>
-          <div class="content"><span>内容</span><textarea name="content" rows="10" cols="38" readOnly="true"><%=content%></textarea></div>
+          <div class="content"><span>内容</span>
+            <textarea name="content" rows="10" cols="38"
+            <%
+              if(userType == 0){
+              %>
+                readOnly="true"
+              <%  
+              }
+            %>><%=content%></textarea>
+          </div>
           <div><input class="modify" value="保存修改" type="submit"></div>
         </form>
       </div>
