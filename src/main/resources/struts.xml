@@ -56,7 +56,7 @@
 		<action name="index" class="com.huoshi.im.action.IndexAction">
 			<result name="success">/index.jsp</result>
 		</action>
-		
+
 		<action name="book" class="com.huoshi.im.action.BookAction">
 			<result name="success">/book.jsp</result>
 		</action>
@@ -227,14 +227,15 @@
 			</result>
 		</action>
 
-
-		<!-- 以下接口还需调试 -->
-		<action name="updateComment" class="com.huoshi.im.action.UpdateCommentAction"
+		<!-- 统计app下载次数 -->
+		<action name="downLoader" class="com.huoshi.im.action.DownLoaderAction"
 			method="process">
 			<result type="stream">
 				<param name="contentType">text/html</param>
 			</result>
 		</action>
+
+		<!-- 同步评论的点赞数 -->
 		<action name="syncCommentVote" class="com.huoshi.im.action.SyncCommentVoteAction"
 			method="process">
 			<result type="stream">

@@ -85,6 +85,17 @@ public class BaseAction extends ActionSupport implements SessionAware, ServletRe
     }
 
     /**
+     * 因为是从nginx跳转过来的 所以获取远程IP不能直接用getRemoteAddr
+     */
+    public String getRemoteAddr() {
+        String remoteAddr = request.getHeader("X-Real-IP");
+        if (EmptyUtil.isEmpty(remoteAddr)) {
+            remoteAddr = request.getRemoteAddr();
+        }
+        return remoteAddr;
+    }
+
+    /**
      * 获取当前登录后台的操作id
      * 
      * @return
