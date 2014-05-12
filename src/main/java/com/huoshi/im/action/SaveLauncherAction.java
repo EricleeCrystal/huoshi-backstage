@@ -98,7 +98,7 @@ public class SaveLauncherAction extends BaseAction {
             return INPUT;
         }
 
-        bgcolor = "0x" + bgcolor + "ff";
+        bgcolor += "ff";
         String imageDir = null;
         String root = EnvUtil.getRoot();
         if (EmptyUtil.isNotEmpty(root)) {

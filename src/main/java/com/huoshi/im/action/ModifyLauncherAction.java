@@ -117,7 +117,7 @@ public class ModifyLauncherAction extends BaseAction {
             return INPUT;
         }
 
-        bgcolor = "0x" + bgcolor + "ff";
+        bgcolor += "ff";
 
         String imageSaveName = "";
         // 使用原图
