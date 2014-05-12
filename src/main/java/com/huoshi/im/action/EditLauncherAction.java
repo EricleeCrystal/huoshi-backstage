@@ -72,8 +72,8 @@ public class EditLauncherAction extends BaseAction {
             exceed = l.getExceed() ? 1 : 0;
             valid = l.getValid() ? 1 : 0;
             bgcolor = EmptyUtil.isEmpty(bgcolor) ? l.getBgcolor() : bgcolor;
-            if (bgcolor.length() == 10) {
-                bgcolor = bgcolor.substring(2, 8);
+            if (bgcolor.length() == 8) {
+                bgcolor = bgcolor.substring(0, 6);
             }
             image = EnvUtil.getImageHost() + l.getImage();
 
