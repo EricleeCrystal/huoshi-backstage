@@ -262,8 +262,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <td class="image">
                   <%
                     String bgcolor = launcherVo.getBgcolor();
-                    if(bgcolor != null && bgcolor.length()==10){
-                      bgcolor = "#"+bgcolor.substring(2,8);
+                    if(bgcolor != null && bgcolor.length()==8){
+                      bgcolor = "#"+bgcolor.substring(0,6);
                     }else{
                       bgcolor = "";
                     }
