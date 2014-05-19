@@ -15,7 +15,7 @@ import com.huoshi.im.vo.Constants.ErrorCode;
 public class MobileLoginAction extends BaseAction {
 
     @Setter
-    private String userName;
+    private String mobileNo;
     @Setter
     private String password;
     @Setter
@@ -30,8 +30,8 @@ public class MobileLoginAction extends BaseAction {
             write(JsonUtil.toErrorRtnMsgJson(ErrorCode.REJECT));
             return;
         }
-        if (EmptyUtil.isEmpty(userName)) {
-            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.EMPTY_USERNAME));
+        if (EmptyUtil.isEmpty(mobileNo)) {
+            write(JsonUtil.toErrorRtnMsgJson(ErrorCode.EMPTY_MOBILENO));
             return;
         }
         if (EmptyUtil.isEmpty(password)) {
@@ -42,6 +42,6 @@ public class MobileLoginAction extends BaseAction {
         if (EmptyUtil.isEmpty(remoteAddr)) {
             remoteAddr = request.getRemoteAddr();
         }
-        write(userService.mobileLogin(userName, password, imei, remoteAddr));
+        write(userService.mobileLogin(mobileNo, password, imei, remoteAddr));
     }
 }
